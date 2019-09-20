@@ -12,18 +12,6 @@ public class Task {
         this.time = time;
     }
 
-    // Methods
-
-    // EFFECT: changes the to-do action of a task
-    public void changeTask(String newAction) {
-        action = newAction;
-    }
-
-    // EFFECT: changes the time of a task
-    public void changeTime(String newTime) {
-        time = newTime;
-    }
-
     // EFFECT: returns task action
     public String getAction() {
         return action;

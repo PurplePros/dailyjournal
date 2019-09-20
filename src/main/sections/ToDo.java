@@ -9,6 +9,16 @@ public class ToDo {
 
     public ToDo() {
 
+    // EFFECT: Prints out the to-do list menu
+    public static void printWelcomeMessage() {
+        System.out.println("TO-DO LIST");
+        System.out.println("What would you like to do? First choose a number option.");
+        System.out.println("(a) Add a new task to my to-do list");
+        System.out.println("      -> Enter in what you need to do and timeframe");
+        System.out.println("(b) Delete a task from my to-do list");
+        System.out.println("      -> Enter the task number you want to delete:");
+        System.out.println("(c) Print out my to-do list");
+        System.out.println("(d) Go back to main menu");
     }
 
     // EFFECT: get the task at given index
