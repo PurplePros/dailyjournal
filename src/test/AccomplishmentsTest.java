@@ -1,6 +1,5 @@
 import elements.AchievedTask;
 import sections.Accomplishments;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,9 +13,8 @@ public class AccomplishmentsTest {
         accomplishedList = new Accomplishments();
     }
 
-    // addAchievement
     @Test
-    public void testAddSomeAchievement() {
+    public void testAddSomeAchievements() {
         AchievedTask action1 = new AchievedTask("Ran a marathon");
         accomplishedList.addAchievedTask(action1);
         AchievedTask action2 = new AchievedTask("Finished all my homework");
@@ -33,7 +31,6 @@ public class AccomplishmentsTest {
         assertEquals(50, accomplishedList.getList().size());
     }
 
-    // deleteAchievement
     @Test
     // test case: one achievement deleted resulting in empty list
     public void testOneAchievementRemovedEmpty() {
@@ -44,7 +41,7 @@ public class AccomplishmentsTest {
     }
 
     @Test
-    // test case: all test cases removed
+    // test case: all achievements removed
     public void testAllAchievementsRemoved() {
         AchievedTask action = new AchievedTask("Became vegetarian");
         for (int i = 0; i < 100; i++) {
@@ -57,7 +54,7 @@ public class AccomplishmentsTest {
     }
 
     @Test
-    // test case: some test cases removed
+    // test case: some achievements removed
     public void testSomeAchievementsRemoved() {
         AchievedTask action = new AchievedTask("Became a meat eater again");
         for (int i = 0; i < 100; i++) {

@@ -7,6 +7,7 @@ public class Accomplishments {
 
     private ArrayList<AchievedTask> achievements;
 
+    // EFFECT: new empty list of achievements
     public Accomplishments() {
         achievements = new ArrayList<AchievedTask>();
     }
@@ -23,7 +24,7 @@ public class Accomplishments {
     }
 
     // MODIFY: this
-    // EFFECT: determine next steps
+    // EFFECT: prompts user and determines next steps
     public void runList() {
         String input;
         Scanner scanner = new Scanner(System.in);
@@ -49,13 +50,13 @@ public class Accomplishments {
     }
 
     // MODIFY: this
-    // EFFECT: remove an accomplishment
+    // EFFECT: remove an accomplishment from given index
     public void deleteAchievedTask(int index) {
         achievements.remove(index);
     }
 
     // MODIFY: this
-    // EFFECT: ask for new achievement information
+    // EFFECT: prompts and adds an accomplishment
     public void addAchievement() {
         Scanner scanner = new Scanner(System.in);
         String accomplishment = scanner.nextLine();
@@ -65,7 +66,7 @@ public class Accomplishments {
     }
 
     // MODIFY: this
-    // EFFECT: ask which achievement to delete
+    // EFFECT: prompts and deletes an achievement
     public void deleteAchievement() {
         Scanner scanner = new Scanner(System.in);
         int index = scanner.nextInt();

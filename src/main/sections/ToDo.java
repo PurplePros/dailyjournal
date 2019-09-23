@@ -1,13 +1,16 @@
 package sections;
 
 import elements.Task;
-import java.util.ArrayList;
+import java.util.*;
 
 public class ToDo {
 
-    ArrayList<Task> toDoList = new ArrayList<Task>();
+    private ArrayList<Task> toDoList;
 
+    // EFFECT: empty to-do list
     public ToDo() {
+        toDoList = new ArrayList<Task>();
+    }
 
     // EFFECT: Prints out the to-do list menu
     public static void printWelcomeMessage() {
@@ -21,22 +24,58 @@ public class ToDo {
         System.out.println("(d) Go back to main menu");
     }
 
-    // EFFECT: get the task at given index
-    public String getTask(int index) {
-        return toDoList.get(index).getAction();
+    // MODIFY: this
+    // EFFECT: Prompts user about what they want to do and executes the next steps
+    public void runToDoList() {
+        String input;
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            printWelcomeMessage();
+            input = scanner.nextLine();
+            if (input.equals("a")) {
+                addToList();
+            } else if (input.equals("b")) {
+                deleteFromList();
+            } else if (input.equals("c")) {
+                printToDoList();
+            } else if (input.equals("d")) {
+                break;
+            } else {
+                System.out.println("Invalid input! Try again.");
+            }
+        }
     }
 
-    // EFFECT: delete a task at given index
-    public void deleteTask(int index) {
-        toDoList.remove(index);
+    // MODIFY: this
+    // EFFECT: prompts and adds task to to-do list
+    public void addToList() {
+        Scanner scanner = new Scanner(System.in);
+        String action = scanner.nextLine();
+        String time = scanner.nextLine();
+        addTask(action, time);
+        System.out.println("Task #" + toDoList.size() + " successfully added!");
+    }
+
+    // MODIFY: this
+    // EFFECT: prompts and deletes task from to-do list
+    public void deleteFromList() {
+        Scanner scanner = new Scanner(System.in);
+        int input = scanner.nextInt();
+        deleteTask(input - 1);
         System.out.println("Task sucessfully deleted! Now you have " + toDoList.size() + " tasks.");
     }
 
-    // EFFECT: add a task
+    // MODIFY: this
+    // EFFECT: delete a task from to-do list at given index
+    public void deleteTask(int index) {
+        toDoList.remove(index);
+    }
+
+    // MODIFY: this
+    // EFFECT: add a task to the to-do list
     public void addTask(String action, String time) {
         Task newTask = new Task(action, time);
         toDoList.add(newTask);
-        System.out.println("Task #" + toDoList.size() + " successfully added!");
     }
 
     // EFFECT: print entire to-do list
@@ -51,4 +90,8 @@ public class ToDo {
         }
     }
 
+    //  EFFECT: returns list
+    public ArrayList getList() {
+        return toDoList;
+    }
 }

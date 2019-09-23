@@ -8,13 +8,14 @@ public class Menu {
     private ToDo toDoList;
     private Accomplishments accomplisedList;
 
+    // EFFECT: empty to-do and accomplishment list for the duration of execution time
     public Menu() {
         toDoList = new ToDo();
         accomplisedList = new Accomplishments();
         runMenu();
     }
 
-    // EFFECT: outputs the main menu
+    // EFFECT: outputs the start menu that entails the options
     public void printMenu() {
         System.out.println("-------------Welcome to Your Journal-------------");
         System.out.println("Please choose which section to access:");
@@ -23,7 +24,7 @@ public class Menu {
         System.out.println("c) Exit");
     }
 
-    // EFFECT: takes in user input to determine next steps
+    // EFFECT: asks user and determines the next menu of their choice
     public void runMenu() {
         String input;
         Scanner scanner = new Scanner(System.in);

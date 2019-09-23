@@ -2,11 +2,10 @@ package elements;
 
 public class Task {
 
-    // Fields
     private String action;
     private String time;
 
-    // Constructor
+    // EFFECT: task created with given action and time
     public Task(String action, String time) {
         this.action = action;
         this.time = time;
