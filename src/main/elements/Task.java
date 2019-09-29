@@ -1,6 +1,6 @@
 package elements;
 
-public class Task {
+public class Task implements GeneralTask {
 
     private String action;
     private String time;

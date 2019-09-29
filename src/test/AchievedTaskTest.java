@@ -14,7 +14,7 @@ public class AchievedTaskTest {
 
     @Test
     public void testGetAchievement(){
-        assertEquals("Ate sauerkraut for the first time.", at.getAchievement());
+        assertEquals("Ate sauerkraut for the first time.", at.getAction());
     }
 }
 

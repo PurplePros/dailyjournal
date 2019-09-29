@@ -2,6 +2,9 @@ import elements.AchievedTask;
 import sections.Accomplishments;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AccomplishmentsTest {
@@ -9,7 +12,7 @@ public class AccomplishmentsTest {
     private Accomplishments accomplishedList;
 
     @BeforeEach
-    public void runBefore() {
+    public void runBefore() throws IOException {
         accomplishedList = new Accomplishments();
     }
 
@@ -19,7 +22,7 @@ public class AccomplishmentsTest {
         accomplishedList.addAchievedTask(action1);
         AchievedTask action2 = new AchievedTask("Finished all my homework");
         accomplishedList.addAchievedTask(action2);
-        assertEquals(2, accomplishedList.getList().size());
+        assertEquals(4, accomplishedList.getList().size());
     }
 
     @Test
@@ -28,7 +31,7 @@ public class AccomplishmentsTest {
         for (int i = 0; i < 50; i++) {
             accomplishedList.addAchievedTask(action);
         }
-        assertEquals(50, accomplishedList.getList().size());
+        assertEquals(52, accomplishedList.getList().size());
     }
 
     @Test
@@ -63,6 +66,26 @@ public class AccomplishmentsTest {
         for (int i = 50; i > 0; i--) {
             accomplishedList.deleteAchievedTask(i);
         }
-        assertEquals(50, accomplishedList.getList().size());
+        assertEquals(52, accomplishedList.getList().size());
     }
+
+    @Test
+    // test case: loading no achievements
+    public void testLoadNoAchievements() throws IOException {
+        accomplishedList.load();
+        assertEquals(4, accomplishedList.getList().size());
+    }
+
+    @Test
+    // test case: loading some achievements
+    public void testLoadSaveSomeAchievements() throws IOException {
+        AchievedTask t1 = new AchievedTask("Ate chocolate");
+        AchievedTask t2 = new AchievedTask("Ate bananas");
+        accomplishedList.addAchievedTask(t1);
+        accomplishedList.addAchievedTask(t2);
+        accomplishedList.save(accomplishedList.getList());
+        accomplishedList.load();
+        assertEquals(4, accomplishedList.getList().size());
+    }
+
 }

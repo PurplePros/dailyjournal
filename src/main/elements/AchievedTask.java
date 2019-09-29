@@ -2,7 +2,7 @@ package elements;
 
 import java.util.*;
 
-public class AchievedTask {
+public class AchievedTask implements GeneralTask {
 
     private String statement;
 
@@ -11,7 +11,7 @@ public class AchievedTask {
     }
 
     // EFFECT: returns the achievement
-    public String getAchievement() {
+    public String getAction() {
         return statement;
     }
 
