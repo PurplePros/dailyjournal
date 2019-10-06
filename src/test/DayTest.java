@@ -14,12 +14,7 @@ public class DayTest {
 
     @BeforeEach
     public void runBefore() throws IOException {
-        day = new Day("data/JournalLog.txt");
-    }
-
-    @Test
-    public void testLoadAndSave() {
-
+        day = new Day("data/JournalLog");
     }
 
     @Test
@@ -174,7 +169,7 @@ public class DayTest {
     }
 
     @Test
-    public void testLoadandSave() throws IOException {
+    public void testLoadAndSave() throws IOException {
         day.load();
         day.addAppointment("Doctor's", "8:00", "238 Middlefield Road");
         day.save();
