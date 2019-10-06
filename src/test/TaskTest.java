@@ -9,7 +9,7 @@ public class TaskTest {
 
     @BeforeEach
     public void runBefore() {
-        t = new Task("Help mom with dishes", "8:30");
+        t = new Task("Help mom with dishes", "8:30", "28 Bridlepath Drive");
     }
 
     @Test
@@ -20,5 +20,10 @@ public class TaskTest {
     @Test
     public void testReturnTime() {
         assertEquals("8:30", t.getTime());
+    }
+
+    @Test
+    public void testReturnLocation() {
+        assertEquals("28 Bridlepath Drive", t.getLocation());
     }
 }

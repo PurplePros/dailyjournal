@@ -1,23 +1,12 @@
 package elements;
 
-public class Task implements GeneralTask {
+public class Task extends GeneralTask {
 
-    private String action;
     private String time;
 
-    // EFFECT: task created with given action and time
-    public Task(String action, String time) {
-        this.action = action;
-        this.time = time;
+    // EFFECT: creates a new task
+    public Task(String action, String time, String location) {
+        super(action, time, location);
     }
 
-    // EFFECT: returns task action
-    public String getAction() {
-        return action;
-    }
-
-    // EFFECT: returns the time of task
-    public String getTime() {
-        return time;
-    }
 }
