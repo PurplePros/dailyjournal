@@ -14,7 +14,7 @@ public class DayTest {
 
     @BeforeEach
     public void runBefore() throws IOException {
-        day = new Day("JournalLog");
+        day = new Day("data/JournalLog.txt");
     }
 
     @Test
