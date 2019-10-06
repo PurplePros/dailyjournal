@@ -173,9 +173,12 @@ public class DayTest {
         day.load();
         day.addAppointment("Doctor's", "8:00", "238 Middlefield Road");
         day.save();
-        assertEquals("Doctor's", day.getAppointmentList().get(0).getAction());
-        assertEquals("8:00", day.getAppointmentList().get(0).getTime());
-        assertEquals("238 Middlefield Road", day.getAppointmentList().get(0).getLocation());
+        assertEquals("Doctor's", day.getAppointmentList().get(1).getAction());
+        assertEquals("8:00", day.getAppointmentList().get(1).getTime());
+        assertEquals("238 Middlefield Road", day.getAppointmentList().get(1).getLocation());
+        assertEquals("Physiotherapy", day.getAppointmentList().get(0).getAction());
+        assertEquals("15:00", day.getAppointmentList().get(0).getTime());
+        assertEquals("Physio Office", day.getAppointmentList().get(0).getLocation());
         assertEquals("Had a wonderful birthday", day.getAchievementList().get(0).getAction());
         assertEquals("Wake up", day.getToDoList().get(0).getAction());
         assertEquals("8:00", day.getToDoList().get(0).getTime());
