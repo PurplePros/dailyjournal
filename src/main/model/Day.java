@@ -22,7 +22,7 @@ public class Day {
     private AppointmentList appointmentList;
     private String date;
 
-    // creates a new day with empty lists
+    // EFFECT: creates a new day with empty lists
     public Day(String date) throws IOException {
         toDoList = new ToDoList();
         accomplishedList = new AccomplishmentList();
@@ -212,7 +212,7 @@ public class Day {
         try {
             if (action.length() == 0 || action.startsWith("$%") || action.startsWith("$*")) {
                 throw new InvalidTaskDescriptionException();
-            } else if (time.length() > 0 && !isRightTimeFormat(time)) {
+            } else if (time.length() == 0 || !isRightTimeFormat(time)) {
                 throw new InvalidTimeFormatException();
             } else {
                 GeneralTask todo = new Appointment(action, time, location);
