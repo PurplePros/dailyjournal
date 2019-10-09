@@ -1,4 +1,9 @@
-package elements;
+package model;
+
+import model.exception.InvalidFormatException;
+import model.exception.InvalidTaskDescriptionException;
+import model.exception.InvalidTaskNumberException;
+import model.exception.InvalidTimeFormatException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,7 +22,7 @@ public class Day {
     private AppointmentList appointmentList;
     private String date;
 
-    // creates a new day with empty lists and loads information from file
+    // creates a new day with empty lists
     public Day(String date) throws IOException {
         toDoList = new ToDoList();
         accomplishedList = new AccomplishmentList();
@@ -26,9 +31,9 @@ public class Day {
     }
 
     // MODIFY: this
-    // EFFECT: print current appointments, to-dos, and achievements into text file
+    // EFFECT: prints current appointments, to-dos, and achievements into text file
     public void save() throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter(date + ".txt", "UTF-8");
+        PrintWriter writer = new PrintWriter("data/" + date + ".txt", "UTF-8");
         ArrayList<GeneralTask> appointments = appointmentList.getList();
         ArrayList<GeneralTask> todos = toDoList.getList();
         ArrayList<GeneralTask> accomplishments = accomplishedList.getList();
@@ -47,7 +52,7 @@ public class Day {
     // MODIFY: this
     // EFFECT: loads appointments, accomplishments, and to-dos from text file into the lists
     public void load() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(date + ".txt"));
+        List<String> lines = Files.readAllLines(Paths.get("data/" + date + ".txt"));
         for (String line : lines) {
             ArrayList<String> words = splitOnSpace(line);
             if (words.get(0).equals("$^")) {
@@ -61,7 +66,7 @@ public class Day {
     }
 
     // MODIFY: this
-    // EFFECT: extracts information from text file line and adds a new appointment to the list with information
+    // EFFECT: extracts appointment information from text file line and adds a new appointment to list
     public void loadAppointment(ArrayList<String> line) {
         String [] taskBuilder = {"", "", ""};
         for (int i = 1; i < line.size(); i++) {
@@ -78,7 +83,7 @@ public class Day {
     }
 
     // MODIFY: this
-    // EFFECT: extracts information from text file line and adds a new accomplishment to the list with information
+    // EFFECT: extracts accomplishment information from text file line and adds a new accomplishment to list
     public void loadAccomplishment(ArrayList<String> line) {
         String [] taskBuilder = {"", "", ""};
         for (int i = 1; i < line.size(); i++) {
@@ -89,7 +94,7 @@ public class Day {
     }
 
     // MODIFY: this
-    // EFFECT: extracts information from text file line and adds a new to-do to the list with information
+    // EFFECT: extracts to-do information from text file line and adds a new to-do task to list
     public void loadToDo(ArrayList<String> line) {
         String [] taskBuilder = {"", "", ""};
         for (int i = 1; i < line.size(); i++) {
@@ -139,42 +144,102 @@ public class Day {
 
     // MODIFY: this
     // EFFECT: takes user's information about new achievement and adds to list
+    // REQUIRE: accomplishment must be a non-empty string
+    //          accomplishment must not start with the string $% or $^
     public void addAchievement(String accomplishment) {
-        GeneralTask action = new Accomplishment(accomplishment, "", "");
-        accomplishedList.addTask(action);
+        try {
+            if (accomplishment.length() > 0 && !accomplishment.startsWith("$%") && !accomplishment.startsWith("$^")) {
+                GeneralTask action = new Accomplishment(accomplishment, "", "");
+                accomplishedList.addTask(action);
+            } else {
+                throw new InvalidTaskDescriptionException();
+            }
+        } catch (InvalidFormatException e) {
+            System.out.println("Invalid format!");
+        }
     }
 
     // MODIFY: this
     // EFFECT: takes user's information about which achievement to delete and deletes from list
-    public void deleteAchievement(int index)  {
-        accomplishedList.deleteTask(index - 1);
+    // REQUIRE: user input must be a valid achievement number
+    public void deleteAchievement(int index) {
+        try {
+            accomplishedList.deleteTask(index - 1);
+        } catch (InvalidTaskNumberException e) {
+            System.out.println("Invalid task number!");
+            System.out.println("Please enter a number between 1 and " + getAchievementList().size());
+        }
     }
 
     // MODIFY: this
     // EFFECT: takes user's information about new to-do and adds to list
+    // REQUIRE: task description must be a non-empty string
+    //          description must not start with the strings $^ or $*
+    //          if time is non-empty, time must be in valid 24-hour format
     public void addToDo(String action, String time, String location) {
-        GeneralTask todo = new Task(action, time, location);
-        toDoList.addTask(todo);
+        try {
+            if (action.length() == 0 || action.startsWith("$*") || action.startsWith("$^")) {
+                throw new InvalidTaskDescriptionException();
+            } else if (time.length() > 0 && !isRightTimeFormat(time)) {
+                throw new InvalidTimeFormatException();
+            } else {
+                GeneralTask todo = new Task(action, time, location);
+                toDoList.addTask(todo);
+            }
+        } catch (InvalidFormatException e) {
+            System.out.println("Invalid Format!");
+        }
     }
 
     // MODIFY: this
     // EFFECT: takes user's information about which to-do to delete and deletes from list
-    public void deleteToDo(int index)  {
-        toDoList.deleteTask(index - 1);
+    // REQUIRE: input must be a valid task number
+    public void deleteToDo(int index) {
+        try {
+            toDoList.deleteTask(index - 1);
+        } catch (InvalidTaskNumberException e) {
+            System.out.println("Invalid task number!");
+            System.out.println("Please enter a number between 1 and " + getToDoList().size());
+        }
     }
 
     // MODIFY: this
     // EFFECT: takes user's information about new appointment and adds to list
+    // REQUIRE: appointment description must be a non-empty string
+    //          description must not start with $% or $*
+    //          appointment time must be a non-empty string and in the 24-hour format
     public void addAppointment(String action, String time, String location) {
-        GeneralTask todo = new Appointment(action, time, location);
-        appointmentList.addTask(todo);
+        try {
+            if (action.length() == 0 || action.startsWith("$%") || action.startsWith("$*")) {
+                throw new InvalidTaskDescriptionException();
+            } else if (time.length() > 0 && !isRightTimeFormat(time)) {
+                throw new InvalidTimeFormatException();
+            } else {
+                GeneralTask todo = new Appointment(action, time, location);
+                appointmentList.addTask(todo);
+            }
+        } catch (InvalidTaskDescriptionException e) {
+            System.out.println("Invalid format!");
+        } catch (InvalidTimeFormatException e) {
+            System.out.println("Need a valid time.");
+        }
     }
 
     // MODIFY: this
     // EFFECT: takes user's information about which appointment to delete and deletes from list
-    public void deleteAppointment(int index)  {
-        appointmentList.deleteTask(index - 1);
+    // REQUIRE: user input must be a valid appointment number
+    public void deleteAppointment(int index) {
+        try {
+            appointmentList.deleteTask(index - 1);
+        } catch (InvalidTaskNumberException e) {
+            System.out.println("Invalid task number!");
+            System.out.println("Please enter a number between 1 and " + getAppointmentList().size());
+        }
+
     }
 
-
+    // EFFECT: returns true if time is in valid 24-hr format
+    protected boolean isRightTimeFormat(String time) {
+        return time.matches("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$");
+    }
 }

@@ -1,7 +1,10 @@
 package ui;
 
-import elements.Day;
-import elements.GeneralTask;
+import model.Day;
+import model.GeneralTask;
+import model.exception.InvalidTaskNumberException;
+import model.exception.InvalidUserInputException;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -10,15 +13,15 @@ public class Menu {
     private Day journalDay;
     private String date;
 
-    // EFFECT: empty to-do and accomplishment list for the duration of execution time
-    public Menu(String date) throws IOException {
+    // EFFECT: runs user-specified menu with this date
+    public Menu(String date) throws IOException, InvalidUserInputException {
         this.date = date;
         journalDay = new Day(date);
         runSelectionMenu();
     }
 
-    // EFFECT: prints the start menu
-    public void printSelectionMenu(String date) {
+    // EFFECT: prints the options to either access the to-do, appointment, or accomplishment lists
+    private void printSelectionMenu(String date) {
         System.out.println("-------------" + date + "-------------");
         System.out.println("Please choose which section to access:");
         System.out.println("a) To-do List");
@@ -28,7 +31,7 @@ public class Menu {
     }
 
     // EFFECT: prints the accomplishments menu
-    public void printAccomplishmentMenu() {
+    private void printAccomplishmentMenu() {
         System.out.println("ACCOMPLISHMENTS");
         System.out.println("How would you like to continue?");
         System.out.println("a) View my achievements");
@@ -37,8 +40,8 @@ public class Menu {
         System.out.println("e) Go back to previous menu");
     }
 
-    // EFFECT: Prints out the to-do list menu
-    public void printToDoMenu() {
+    // EFFECT: prints out the to-do list menu
+    private void printToDoMenu() {
         System.out.println("TO-DO LIST");
         System.out.println("What would you like to do? Choose an option.");
         System.out.println("(a) View my to-do list");
@@ -50,7 +53,7 @@ public class Menu {
     }
 
     // EFFECT: prints out the to-do list menu
-    public void printAppointmentMenu() {
+    private void printAppointmentMenu() {
         System.out.println("APPOINTMENTS");
         System.out.println("(a) View my appointments");
         System.out.println("(b) Add a new appointment");
@@ -61,95 +64,138 @@ public class Menu {
     }
 
     // EFFECT: prompts user input on which menu to access next and accesses the menu, otherwise save and exit
+    // REQUIRE: user input must match one of the listed options
     public void runSelectionMenu() throws IOException {
         journalDay.load();
-        String input;
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            printSelectionMenu(date);
-            input = scanner.nextLine();
-            if (input.equals("a")) {
-                runToDoMenu();
-            } else if (input.equals("b")) {
-                runAccomplishmentMenu();
-            } else if (input.equals("c")) {
-                runAppointmentMenu();
-            } else {
-                journalDay.save();
+            try {
+                printSelectionMenu(date);
+                String input = scanner.nextLine();
+                if (input.toLowerCase().equals("d")) {
+                    journalDay.save();
+                    break;
+                } else {
+                    takeInputSelection(input);
+                }
+            } catch (InvalidUserInputException e) {
+                System.out.println("Not an option! Try again.");
+            }
+        }
+    }
+
+    // MODIFY: this
+    // EFFECT: takes in user input and executes next steps
+    // REQUIRE: user input must match one of the listed options
+    public void takeInputSelection(String input) throws InvalidUserInputException {
+        if (input.toLowerCase().equals("a")) {
+            runToDoMenu();
+        } else if (input.toLowerCase().equals("b")) {
+            runAccomplishmentMenu();
+        } else if (input.toLowerCase().equals("c")) {
+            runAppointmentMenu();
+        } else {
+            throw new InvalidUserInputException();
+        }
+    }
+
+    // MODIFY: this
+    // EFFECT: prompts user and determines next steps
+    // REQUIRE: user input must match one of the listed options
+    public void runAccomplishmentMenu() throws InvalidUserInputException {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            printAccomplishmentMenu();
+            String input = scanner.nextLine();
+            if (input.toLowerCase().equals("a")) {
+                printAccomplishmentList();
+            } else if (input.toLowerCase().equals("b")) {
+                String accomplishment = scanner.nextLine();
+                journalDay.addAchievement(accomplishment);
+            } else if (input.toLowerCase().equals("c")) {
+                int index = scanner.nextInt();
+                journalDay.deleteAchievement(index);
+            } else if (input.toLowerCase().equals("d")) {
                 break;
+            } else {
+                throw new InvalidUserInputException();
             }
         }
     }
 
     // MODIFY: this
     // EFFECT: prompts user and determines next steps
-    public void runAccomplishmentMenu() throws IOException {
-        String input;
+    // REQUIRE: user input must match one of the listed options
+    public void runToDoMenu() throws InvalidUserInputException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            printAccomplishmentMenu();
-            input = scanner.nextLine();
-            if (input.equals("a")) {
-                printAccomplishmentList();
-            } else if (input.equals("b")) {
-                String accomplishment = scanner.nextLine();
-                journalDay.addAchievement(accomplishment);
-            } else if (input.equals("c")) {
-                int index = scanner.nextInt();
-                journalDay.deleteAchievement(index);
-            } else {
+            printToDoMenu();
+            String input = scanner.nextLine();
+            if (input.toLowerCase().equals("d")) {
                 break;
+            } else {
+                takeInputToDo(input);
             }
         }
     }
 
     // MODIFY: this
-    // EFFECT: Prompts user about what they want to do and executes the next steps
-    public void runToDoMenu() {
+    // EFFECT: takes in user input and executes next steps
+    // REQUIRE: user input must match one of the listed options
+    public void takeInputToDo(String input) throws InvalidUserInputException {
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            printToDoMenu();
-            String input = scanner.nextLine();
-            if (input.equals("a")) {
-                printToDoList();
-            } else if (input.equals("b")) {
-                String action = scanner.nextLine();
-                String time = scanner.nextLine();
-                String location = scanner.nextLine();
-                journalDay.addToDo(action, time, location);
-            } else if (input.equals("c")) {
-                int index = scanner.nextInt();
-                journalDay.deleteToDo(index);
-            } else {
-                break;
-            }
+        if (input.toLowerCase().equals("a")) {
+            printToDoList();
+        } else if (input.toLowerCase().equals("b")) {
+            String action = scanner.nextLine();
+            String time = scanner.nextLine();
+            String location = scanner.nextLine();
+            journalDay.addToDo(action, time, location);
+        } else if (input.toLowerCase().equals("c")) {
+            int index = scanner.nextInt();
+            journalDay.deleteToDo(index);
+        } else {
+            throw new InvalidUserInputException();
         }
     }
 
     // MODIFY: this
     // EFFECT: prompts user about what they want to do and executes the next steps
-    public void runAppointmentMenu() throws IOException {
+    // REQUIRE: user input must match one of the listed options
+    public void runAppointmentMenu() throws InvalidUserInputException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             printAppointmentMenu();
             String input = scanner.nextLine();
-            if (input.equals("a")) {
-                printAppointmentList();
-            } else if (input.equals("b")) {
-                String action = scanner.nextLine();
-                String time = scanner.nextLine();
-                String location = scanner.nextLine();
-                journalDay.addAppointment(action, time, location);
-            } else if (input.equals("c")) {
-                int index = scanner.nextInt();
-                journalDay.deleteAppointment(index);
-            } else {
+            if (input.toLowerCase().equals("d")) {
                 break;
+            } else {
+                takeInputAppointments(input);
             }
         }
     }
 
-    // EFFECT: prints all the achievements
+    // MODIFY: this
+    // EFFECT: takes in user input and executes next steps
+    // REQUIRE: user input must match one of the listed options
+    public void takeInputAppointments(String input) throws InvalidUserInputException {
+        Scanner scanner = new Scanner(System.in);
+        if (input.toLowerCase().equals("a")) {
+            printAppointmentList();
+        } else if (input.toLowerCase().equals("b")) {
+            String action = scanner.nextLine();
+            String time = scanner.nextLine();
+            String location = scanner.nextLine();
+            journalDay.addAppointment(action, time, location);
+        } else if (input.toLowerCase().equals("c")) {
+            int index = scanner.nextInt();
+            journalDay.deleteAppointment(index);
+        } else {
+            throw new InvalidUserInputException();
+        }
+    }
+
+    // EFFECT: prints all the current achievements
     public void printAccomplishmentList() {
         int i = 1;
         for (GeneralTask s : journalDay.getAchievementList()) {
@@ -158,27 +204,31 @@ public class Menu {
         }
     }
 
-    // EFFECT: print entire to-do list
+    // EFFECT: prints current to-do list
     public void printToDoList() {
         System.out.println("Your to-do list for today:");
         int i = 1;
         for (GeneralTask t : journalDay.getToDoList()) {
             System.out.print("(" + i + ") ");
             System.out.println(t.getAction() + " @ " + t.getTime());
-            System.out.println("Location: " + t.getLocation());
+            if (!t.getAction().equals("")) {
+                System.out.println("Location: " + t.getLocation());
+            }
             System.out.println("");
             i++;
         }
     }
 
-    // EFFECT: print entire appointment list
+    // EFFECT: prints current appointments
     public void printAppointmentList() {
         System.out.println("Your appointments for today:");
         int i = 1;
         for (GeneralTask a : journalDay.getAppointmentList()) {
             System.out.print("(" + i + ") ");
             System.out.println(a.getAction() + " @ " + a.getTime());
-            System.out.println("Location: " + a.getLocation());
+            if (!a.getAction().equals("")) {
+                System.out.println("Location: " + a.getLocation());
+            }
             System.out.println("");
             i++;
         }

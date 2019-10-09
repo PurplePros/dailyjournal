@@ -1,4 +1,4 @@
-package elements;
+package model;
 
 public abstract class GeneralTask {
 
@@ -6,7 +6,8 @@ public abstract class GeneralTask {
     protected String time;
     protected String location;
 
-    // EFFECT: creates a new general task
+    // EFFECT: creates a new general task given the action, time, and location
+    // REQUIRE: task action length > 0
     public GeneralTask(String action, String time, String location) {
         this.action = action;
         this.time = time;
@@ -27,5 +28,4 @@ public abstract class GeneralTask {
     public String getLocation() {
         return location;
     }
-
 }

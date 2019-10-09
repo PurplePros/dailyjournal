@@ -1,12 +1,16 @@
-import elements.*;
+package model;
+
+import model.exception.InvalidFormatException;
+import model.exception.InvalidTaskDescriptionException;
+import model.exception.InvalidTaskNumberException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sun.java2d.loops.FillRect;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class DayTest {
 
@@ -14,7 +18,7 @@ public class DayTest {
 
     @BeforeEach
     public void runBefore() throws IOException {
-        day = new Day("data/JournalLog");
+        day = new Day("JournalLog");
     }
 
     @Test
@@ -99,7 +103,7 @@ public class DayTest {
     }
 
     @Test
-    public void testDeleteToDo() {
+    public void testDeleteToDo() throws InvalidTaskNumberException {
         GeneralTask a1 = new Task("Dinner with mom", "8:00", "213 Infield Dr");
         GeneralTask a2 = new Task("Physiotherapy", "10:00", "34 Lake St");
         GeneralTask a3 = new Task("Meeting with prof", "14:00", "");
@@ -113,7 +117,7 @@ public class DayTest {
     }
 
     @Test
-    public void testDeleteAppointment() {
+    public void testDeleteAppointment() throws InvalidTaskNumberException {
         GeneralTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr");
         GeneralTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St");
         GeneralTask a3 = new Appointment("Meeting with prof", "14:00", "");
@@ -127,7 +131,7 @@ public class DayTest {
     }
 
     @Test
-    public void testDeleteAccomplishment() {
+    public void testDeleteAccomplishment() throws InvalidTaskNumberException {
         GeneralTask a1 = new Accomplishment("Became vegetarian", "", "");
         GeneralTask a2 = new Accomplishment("Passed all my courses", "", "");
         GeneralTask a3 = new Accomplishment("Climbed Mount Everest", "", "");
@@ -183,5 +187,90 @@ public class DayTest {
         assertEquals("Wake up", day.getToDoList().get(0).getAction());
         assertEquals("8:00", day.getToDoList().get(0).getTime());
         assertEquals("The Birdcoop", day.getToDoList().get(0).getLocation());
+    }
+
+    @Test
+    public void testAddEmptyAchievement() {
+        day.addAchievement("");
+        assertEquals(0, day.getAchievementList().size());
+    }
+
+    @Test
+    public void testAddEmptyToDo() {
+        day.addToDo("", "8:00", "23 Infield Dr");
+        assertEquals(0, day.getToDoList().size());
+    }
+
+    @Test
+    public void testAddEmptyAppointment() {
+        day.addAppointment("", "8:00", "23 Infield Dr");
+        assertEquals(0, day.getToDoList().size());
+    }
+
+    @Test
+    public void testAddAchievementStartWrong() {
+        day.addAchievement("$% Ate sauerkraut");
+        day.addAchievement("$^ Ate pickles");
+        assertEquals(0, day.getAchievementList().size());
+    }
+
+    @Test
+    public void testAddAppointmentStartWrong() {
+        day.addAppointment("$% Meeting with Laura", "4:00", "Home");
+        day.addAppointment("$* Dinner with mom", "8:00", "The Eatery");
+        assertEquals(0, day.getAppointmentList().size());
+    }
+
+    @Test
+    public void testAddToDoStartWrong() {
+        day.addToDo("$^ Meeting with Laura", "4:00", "Home");
+        day.addToDo("$* Dinner with mom", "8:00", "The Eatery");
+        assertEquals(0, day.getToDoList().size());
+    }
+
+    @Test
+    public void testAddToDoEmptyTime() {
+        day.addToDo("Meeting with Laura", "", "Home");
+        assertEquals(1, day.getToDoList().size());
+    }
+
+    @Test
+    public void testAddToDoTimeInvalidFormat() {
+        day.addToDo("Meeting with Laura", "32:00", "Home");
+        assertEquals(0, day.getToDoList().size());
+    }
+
+    @Test
+    public void testAddAppointmentEmptyTime() {
+        day.addToDo("Meeting with Laura", "", "Home");
+        assertEquals(0, day.getAppointmentList().size());
+    }
+
+    @Test
+    public void testAddAppointmentTimeInvalidFormat() {
+        day.addToDo("Meeting with Laura", "32:00", "Home");
+        assertEquals(0, day.getAppointmentList().size());
+    }
+
+    @Test
+    public void testDeleteWrongAppointmentNumber() {
+        day.addAppointment("Doctor's", "8:00", "23 Infield DR");
+        day.deleteAchievement(2);
+        assertEquals(1, day.getAppointmentList().size());
+    }
+
+    @Test
+    public void testDeleteWrongTaskNumber() {
+        day.addToDo("Doctor's", "8:00", "23 Infield DR");
+        day.deleteAchievement(2);
+        assertEquals(1, day.getToDoList().size());
+    }
+
+
+    @Test
+    public void testDeleteWrongAchievementNumber() {
+        day.addAchievement("Finished my first CPSC210 project");
+        day.deleteAchievement(2);
+        assertEquals(1, day.getAchievementList().size());
     }
 }
