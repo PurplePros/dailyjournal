@@ -10,7 +10,7 @@ public class TaskTest {
 
     @BeforeEach
     public void runBefore() {
-        t = new Task("Help mom with dishes", "8:30", "28 Bridlepath Drive");
+        t = new Task("Help mom with dishes", "8:30", "28 Bridlepath Drive", null);
     }
 
     @Test

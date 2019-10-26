@@ -13,30 +13,33 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Day {
 
-    private ToDoList toDoList;
-    private AccomplishmentList accomplishedList;
-    private AppointmentList appointmentList;
-    private String date;
+    public HashMap<String, GeneralList> list;
+    public String date;
 
     // EFFECT: creates a new day with empty lists
     public Day(String date) throws IOException {
-        toDoList = new ToDoList();
-        accomplishedList = new AccomplishmentList();
-        appointmentList = new AppointmentList();
+        list = new HashMap<>();
+        ToDoList toDoList = new ToDoList();
+        AccomplishmentList accomplishedList = new AccomplishmentList();
+        AppointmentList appointmentList = new AppointmentList();
         this.date = date;
+        list.put("todos", toDoList);
+        list.put("apps", appointmentList);
+        list.put("accs", accomplishedList);
     }
 
     // MODIFY: this
     // EFFECT: prints current appointments, to-dos, and achievements into text file
     public void save() throws FileNotFoundException, UnsupportedEncodingException {
         PrintWriter writer = new PrintWriter("data/" + date + ".txt", "UTF-8");
-        ArrayList<GeneralTask> appointments = appointmentList.getList();
-        ArrayList<GeneralTask> todos = toDoList.getList();
-        ArrayList<GeneralTask> accomplishments = accomplishedList.getList();
+        ArrayList<GeneralTask> appointments = list.get("apps").getList();
+        ArrayList<GeneralTask> todos = list.get("todos").getList();
+        ArrayList<GeneralTask> accomplishments = list.get("accs").getList();
         for (GeneralTask t : appointments) {
             writer.println("$^ " + t.getAction() + " " + t.getTime() + " " + putAtInFront(t.getLocation()));
         }
@@ -78,8 +81,9 @@ public class Day {
                 taskBuilder[0] += line.get(i) + " ";
             }
         }
-        Appointment t = new Appointment(taskBuilder[0].trim(), taskBuilder[1].trim(), taskBuilder[2].trim());
-        appointmentList.getList().add(t);
+        Appointment t = new Appointment(taskBuilder[0].trim(), taskBuilder[1].trim(), taskBuilder[2].trim(),
+                list.get("apps"));
+        list.get("apps").getList().add(t);
     }
 
     // MODIFY: this
@@ -89,8 +93,8 @@ public class Day {
         for (int i = 1; i < line.size(); i++) {
             taskBuilder[0] = taskBuilder[0] + line.get(i) + " ";
         }
-        Accomplishment t = new Accomplishment(taskBuilder[0].trim(), "", "");
-        accomplishedList.getList().add(t);
+        Accomplishment t = new Accomplishment(taskBuilder[0].trim(), "", "", list.get("accs"));
+        list.get("accs").getList().add(t);
     }
 
     // MODIFY: this
@@ -106,8 +110,8 @@ public class Day {
                 taskBuilder[0] += line.get(i) + " ";
             }
         }
-        Task t = new Task(taskBuilder[0].trim(), taskBuilder[1].trim(), taskBuilder[2].trim());
-        toDoList.getList().add(t);
+        Task t = new Task(taskBuilder[0].trim(), taskBuilder[1].trim(), taskBuilder[2].trim(), list.get("todos"));
+        list.get("todos").getList().add(t);
     }
 
     // MODIFY: splits the given string into separate words
@@ -129,17 +133,17 @@ public class Day {
 
     // EFFECT: returns accomplishments
     public ArrayList<GeneralTask> getAchievementList() {
-        return accomplishedList.getList();
+        return list.get("accs").getList();
     }
 
     // EFFECT: returns to-do list
     public ArrayList<GeneralTask> getToDoList() {
-        return toDoList.getList();
+        return list.get("todos").getList();
     }
 
     // EFFECT: returns appointments
     public ArrayList<GeneralTask> getAppointmentList() {
-        return appointmentList.getList();
+        return list.get("apps").getList();
     }
 
     // MODIFY: this
@@ -149,8 +153,8 @@ public class Day {
     public void addAchievement(String accomplishment) {
         try {
             if (accomplishment.length() > 0 && !accomplishment.startsWith("$%") && !accomplishment.startsWith("$^")) {
-                GeneralTask action = new Accomplishment(accomplishment, "", "");
-                accomplishedList.addTask(action);
+                GeneralTask action = new Accomplishment(accomplishment, "", "", list.get("accs"));
+                list.get("accs").addTask(action);
             } else {
                 throw new InvalidTaskDescriptionException();
             }
@@ -164,7 +168,7 @@ public class Day {
     // REQUIRE: user input must be a valid achievement number
     public void deleteAchievement(int index) {
         try {
-            accomplishedList.deleteTask(index - 1);
+            list.get("accs").deleteTask(index - 1);
         } catch (InvalidTaskNumberException e) {
             System.out.println("Invalid task number!");
             System.out.println("Please enter a number between 1 and " + getAchievementList().size());
@@ -183,8 +187,8 @@ public class Day {
             } else if (time.length() > 0 && !isRightTimeFormat(time)) {
                 throw new InvalidTimeFormatException();
             } else {
-                GeneralTask todo = new Task(action, time, location);
-                toDoList.addTask(todo);
+                GeneralTask todo = new Task(action, time, location, list.get("todos"));
+                list.get("todos").addTask(todo);
             }
         } catch (InvalidFormatException e) {
             System.out.println("Invalid Format!");
@@ -196,7 +200,7 @@ public class Day {
     // REQUIRE: input must be a valid task number
     public void deleteToDo(int index) {
         try {
-            toDoList.deleteTask(index - 1);
+            list.get("todos").deleteTask(index - 1);
         } catch (InvalidTaskNumberException e) {
             System.out.println("Invalid task number!");
             System.out.println("Please enter a number between 1 and " + getToDoList().size());
@@ -215,8 +219,8 @@ public class Day {
             } else if (time.length() == 0 || !isRightTimeFormat(time)) {
                 throw new InvalidTimeFormatException();
             } else {
-                GeneralTask todo = new Appointment(action, time, location);
-                appointmentList.addTask(todo);
+                GeneralTask todo = new Appointment(action, time, location, list.get("apps"));
+                list.get("apps").addTask(todo);
             }
         } catch (InvalidTaskDescriptionException e) {
             System.out.println("Invalid format!");
@@ -230,7 +234,7 @@ public class Day {
     // REQUIRE: user input must be a valid appointment number
     public void deleteAppointment(int index) {
         try {
-            appointmentList.deleteTask(index - 1);
+            list.get("apps").deleteTask(index - 1);
         } catch (InvalidTaskNumberException e) {
             System.out.println("Invalid task number!");
             System.out.println("Please enter a number between 1 and " + getAppointmentList().size());

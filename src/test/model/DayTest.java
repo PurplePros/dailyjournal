@@ -42,9 +42,9 @@ public class DayTest {
     @Test
     public void testGetAchievementList() {
         ArrayList<GeneralTask> list = new ArrayList<GeneralTask>();
-        GeneralTask a1 = new Accomplishment("Became vegetarian", "", "");
-        GeneralTask a2 = new Accomplishment("Passed all my courses", "", "");
-        GeneralTask a3 = new Accomplishment("Climbed Mount Everest", "", "");
+        GeneralTask a1 = new Accomplishment("Became vegetarian", "", "", day.list.get("accs"));
+        GeneralTask a2 = new Accomplishment("Passed all my courses", "", "", day.list.get("accs"));
+        GeneralTask a3 = new Accomplishment("Climbed Mount Everest", "", "", day.list.get("accs"));
         list.add(a1);
         list.add(a2);
         list.add(a3);
@@ -59,9 +59,9 @@ public class DayTest {
     @Test
     public void testGetAppointmentList() {
         ArrayList<GeneralTask> list = new ArrayList<GeneralTask>();
-        GeneralTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr");
-        GeneralTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St");
-        GeneralTask a3 = new Appointment("Meeting with prof", "14:00", "");
+        GeneralTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr", day.list.get("apps"));
+        GeneralTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St", day.list.get("apps"));
+        GeneralTask a3 = new Appointment("Meeting with prof", "14:00", "", day.list.get("apps"));
         list.add(a1);
         list.add(a2);
         list.add(a3);
@@ -82,9 +82,9 @@ public class DayTest {
     @Test
     public void testGetToDoList() {
         ArrayList<GeneralTask> list = new ArrayList<GeneralTask>();
-        GeneralTask a1 = new Task("Dinner with mom", "8:00", "213 Infield Dr");
-        GeneralTask a2 = new Task("Physiotherapy", "10:00", "34 Lake St");
-        GeneralTask a3 = new Task("Meeting with prof", "14:00", "");
+        GeneralTask a1 = new Task("Dinner with mom", "8:00", "213 Infield Dr", day.list.get("todos"));
+        GeneralTask a2 = new Task("Physiotherapy", "10:00", "34 Lake St", day.list.get("todos"));
+        GeneralTask a3 = new Task("Meeting with prof", "14:00", "", day.list.get("todos"));
         list.add(a1);
         list.add(a2);
         list.add(a3);
@@ -104,9 +104,9 @@ public class DayTest {
 
     @Test
     public void testDeleteToDo() throws InvalidTaskNumberException {
-        GeneralTask a1 = new Task("Dinner with mom", "8:00", "213 Infield Dr");
-        GeneralTask a2 = new Task("Physiotherapy", "10:00", "34 Lake St");
-        GeneralTask a3 = new Task("Meeting with prof", "14:00", "");
+        GeneralTask a1 = new Task("Dinner with mom", "8:00", "213 Infield Dr", day.list.get("todos"));
+        GeneralTask a2 = new Task("Physiotherapy", "10:00", "34 Lake St", day.list.get("todos"));
+        GeneralTask a3 = new Task("Meeting with prof", "14:00", "", day.list.get("todos"));
         day.addToDo("Dinner with mom", "8:00", "213 Infield Dr");
         day.addToDo("Physiotherapy", "10:00", "34 Lake St");
         day.addToDo("Meeting with prof", "14:00", "");
@@ -118,9 +118,9 @@ public class DayTest {
 
     @Test
     public void testDeleteAppointment() throws InvalidTaskNumberException {
-        GeneralTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr");
-        GeneralTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St");
-        GeneralTask a3 = new Appointment("Meeting with prof", "14:00", "");
+        GeneralTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr", day.list.get("apps"));
+        GeneralTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St", day.list.get("apps"));
+        GeneralTask a3 = new Appointment("Meeting with prof", "14:00", "", day.list.get("apps"));
         day.addAppointment("Doctor's", "8:00", "213 Infield Dr");
         day.addAppointment("Physiotherapy", "10:00", "34 Lake St");
         day.addAppointment("Meeting with prof", "14:00", "");
@@ -132,9 +132,9 @@ public class DayTest {
 
     @Test
     public void testDeleteAccomplishment() throws InvalidTaskNumberException {
-        GeneralTask a1 = new Accomplishment("Became vegetarian", "", "");
-        GeneralTask a2 = new Accomplishment("Passed all my courses", "", "");
-        GeneralTask a3 = new Accomplishment("Climbed Mount Everest", "", "");
+        GeneralTask a1 = new Accomplishment("Became vegetarian", "", "", day.list.get("accs"));
+        GeneralTask a2 = new Accomplishment("Passed all my courses", "", "", day.list.get("accs"));
+        GeneralTask a3 = new Accomplishment("Climbed Mount Everest", "", "", day.list.get("accs"));
         day.addAchievement("Became vegetarian");
         day.addAchievement("Passed all my courses");
         day.addAchievement("Climbed Mount Everest");

@@ -11,8 +11,11 @@ public class AppointmentList extends GeneralList {
 
     // EFFECT: adds an appointment to the existing list and prints a success message
     public void addTask(GeneralTask appointment) {
-        list.add(appointment);
-        System.out.println("Appointment #" + list.size() + " added!");
+        if (!list.contains(appointment)) {
+            list.add(appointment);
+            appointment.addList(this);
+            System.out.println("Appointment #" + list.size() + " added!");
+        }
     }
 
     // EFFECT: deletes an appointment from existing list and prints a success message
@@ -21,8 +24,12 @@ public class AppointmentList extends GeneralList {
         if (index >= list.size()) {
             throw new InvalidTaskNumberException();
         } else {
-            list.remove(index);
-            System.out.println("Appointment deleted! Now you have " + list.size() + " appointments.");
+            GeneralTask item = list.get(index);
+            if (list.contains(item)) {
+                list.remove(index);
+                item.removeList(null, index);
+                System.out.println("Appointment deleted! Now you have " + list.size() + " appointments.");
+            }
         }
     }
 }

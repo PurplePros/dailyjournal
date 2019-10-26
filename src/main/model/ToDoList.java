@@ -11,8 +11,11 @@ public class ToDoList extends GeneralList {
     // MODIFY: this
     // EFFECT: adds a task to to-do list and prints success message
     public void addTask(GeneralTask a) {
-        list.add(a);
-        System.out.println("Task #" + list.size() + "added!");
+        if (!list.contains(a)) {
+            list.add(a);
+            a.addList(this);
+            System.out.println("Task #" + list.size() + " added!");
+        }
     }
 
     // MODIFY: this
@@ -22,9 +25,12 @@ public class ToDoList extends GeneralList {
         if (index >= list.size()) {
             throw new InvalidTaskNumberException();
         } else {
-            list.remove(index);
-            System.out.println("Task removed! Now you have " + list.size() + "tasks!");
+            GeneralTask item = list.get(index);
+            if (list.contains(item)) {
+                list.remove(index);
+                item.removeList(null, index);
+                System.out.println("Task removed! Now you have " + list.size() + "tasks!");
+            }
         }
     }
-
 }
