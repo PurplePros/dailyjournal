@@ -1,24 +1,21 @@
 package model;
 
-import model.exception.InvalidTaskDescriptionException;
 import model.exception.InvalidTaskNumberException;
 
-import java.util.Objects;
-
-public abstract class GeneralTask {
+public class MultipleElementsTask {
 
     protected String action;
     protected String time;
     protected String location;
-    protected GeneralList gl;
+    protected MultipleElementsList ml;
 
     // EFFECT: creates a new general task given the action, time, and location
     // REQUIRE: task action length > 0
-    public GeneralTask(String action, String time, String location, GeneralList gl) {
+    public MultipleElementsTask(String action, String time, String location, MultipleElementsList ml) {
         this.action = action;
         this.time = time;
         this.location = location;
-        this.gl = gl;
+        this.ml = ml;
     }
 
     // EFFECT: returns the task action
@@ -36,21 +33,21 @@ public abstract class GeneralTask {
         return location;
     }
 
-    public void setGeneralList(GeneralList gl) {
-        this.gl = gl;
+    public void setList(MultipleElementsList ml) {
+        this.ml = ml;
     }
 
-    public void addList(GeneralList gl) {
-        if (!this.gl.equals(gl)) {
-            setGeneralList(gl);
-            gl.addTask(this);
+    public void addList(MultipleElementsList ml) {
+        if (!this.ml.equals(ml)) {
+            setList(ml);
+            ml.addTask(this);
         }
     }
 
-    public void removeList(GeneralList gl, int index) throws InvalidTaskNumberException {
-        if (this.gl.equals(gl)) {
-            setGeneralList(null);
-            gl.deleteTask(index);
+    public void removeList(MultipleElementsList ml, int index) throws InvalidTaskNumberException {
+        if (this.ml.equals(ml)) {
+            setList(null);
+            ml.deleteTask(index);
         }
     }
 
@@ -63,7 +60,7 @@ public abstract class GeneralTask {
             return false;
         }
 
-        GeneralTask other = (GeneralTask) obj;
+        MultipleElementsTask other = (MultipleElementsTask) obj;
 
         return this.action.equals(other.action) && this.time.equals(other.time) && this.location.equals(other.location);
     }

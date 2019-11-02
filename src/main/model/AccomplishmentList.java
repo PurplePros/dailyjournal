@@ -2,20 +2,18 @@ package model;
 
 import model.exception.InvalidTaskNumberException;
 
-import java.util.ArrayList;
-
-public class AccomplishmentList extends GeneralList {
+public class AccomplishmentList extends SingleElementList {
 
     // EFFECT: creates an empty accomplishment list
     public AccomplishmentList() {
         super();
     }
-
+/*
     // MODIFY: this
     // EFFECT: adds an accomplishment to the accomplishment list and prints a success message
-    public void addTask(GeneralTask a) {
-        if (!list.contains(a)) {
-            list.add(a);
+    public void addTask(SingleElementTask a) {
+        if (!multipleList.contains(a)) {
+            multipleList.add(a);
             a.addList(this);
             System.out.println("Achievement added!");
         }
@@ -25,15 +23,15 @@ public class AccomplishmentList extends GeneralList {
     // EFFECT: deletes an accomplishment from the list and prints success message
     // REQUIRE: index < size of accomplishment list
     public void deleteTask(int index) throws InvalidTaskNumberException {
-        if (index >= list.size()) {
+        if (index >= singleElementList.size()) {
             throw new InvalidTaskNumberException();
         } else {
-            GeneralTask item = list.get(index);
-            if (list.contains(item)) {
-                list.remove(index);
+            SingleElementTask item = singleElementList.get(index);
+            if (singleElementList.contains(item)) {
+                singleElementList.remove(index);
                 item.removeList(null, index);
                 System.out.println("Achievement removed!");
             }
         }
-    }
+    }*/
 }

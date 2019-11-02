@@ -1,8 +1,6 @@
 package ui;
 
-import model.Day;
-import model.GeneralTask;
-import model.exception.InvalidTaskNumberException;
+import model.*;
 import model.exception.InvalidUserInputException;
 
 import java.io.IOException;
@@ -10,13 +8,19 @@ import java.util.*;
 
 public class Menu {
 
-    private Day journalDay;
+    private FileProcessor processor;
     private String date;
+    private Day journalDay;
 
     // EFFECT: runs user-specified menu with this date
     public Menu(String date) throws IOException, InvalidUserInputException {
         this.date = date;
-        journalDay = new Day(date);
+        processor = new FileProcessor(date);
+        processor.load();
+        ToDoList td = processor.getToDoList();
+        AccomplishmentList ac = processor.getAccomplishmentList();
+        AppointmentList ap = processor.getAppointmentList();
+        journalDay = new Day(date, td, ac, ap);
         runSelectionMenu();
     }
 
@@ -66,14 +70,13 @@ public class Menu {
     // EFFECT: prompts user input on which menu to access next and accesses the menu, otherwise save and exit
     // REQUIRE: user input must match one of the listed options
     public void runSelectionMenu() throws IOException {
-        journalDay.load();
         Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
                 printSelectionMenu(date);
                 String input = scanner.nextLine();
                 if (input.toLowerCase().equals("d")) {
-                    journalDay.save();
+                    processor.save();
                     break;
                 } else {
                     takeInputSelection(input);
@@ -108,7 +111,7 @@ public class Menu {
             printAccomplishmentMenu();
             String input = scanner.nextLine();
             if (input.toLowerCase().equals("a")) {
-                printAccomplishmentList();
+                printSingleList(journalDay.getAchievementList());
             } else if (input.toLowerCase().equals("b")) {
                 String accomplishment = scanner.nextLine();
                 journalDay.addAchievement(accomplishment);
@@ -145,7 +148,7 @@ public class Menu {
     public void takeInputToDo(String input) throws InvalidUserInputException {
         Scanner scanner = new Scanner(System.in);
         if (input.toLowerCase().equals("a")) {
-            printToDoList();
+            printMultipleList(journalDay.getToDoList());
         } else if (input.toLowerCase().equals("b")) {
             String action = scanner.nextLine();
             String time = scanner.nextLine();
@@ -181,7 +184,7 @@ public class Menu {
     public void takeInputAppointments(String input) throws InvalidUserInputException {
         Scanner scanner = new Scanner(System.in);
         if (input.toLowerCase().equals("a")) {
-            printAppointmentList();
+            printMultipleList(journalDay.getAppointmentList());
         } else if (input.toLowerCase().equals("b")) {
             String action = scanner.nextLine();
             String time = scanner.nextLine();
@@ -195,20 +198,9 @@ public class Menu {
         }
     }
 
-    // EFFECT: prints all the current achievements
-    public void printAccomplishmentList() {
+    public void printMultipleList(ArrayList<MultipleElementsTask> list) {
         int i = 1;
-        for (GeneralTask s : journalDay.getAchievementList()) {
-            System.out.println(i + ". " + s.getAction());
-            i++;
-        }
-    }
-
-    // EFFECT: prints current to-do list
-    public void printToDoList() {
-        System.out.println("Your to-do list for today:");
-        int i = 1;
-        for (GeneralTask t : journalDay.getToDoList()) {
+        for (MultipleElementsTask t : list) {
             System.out.print("(" + i + ") ");
             System.out.println(t.getAction() + " @ " + t.getTime());
             if (!t.getAction().equals("")) {
@@ -219,17 +211,11 @@ public class Menu {
         }
     }
 
-    // EFFECT: prints current appointments
-    public void printAppointmentList() {
-        System.out.println("Your appointments for today:");
+    // EFFECT: prints all the current achievements
+    public void printSingleList(ArrayList<MultipleElementsTask> list) {
         int i = 1;
-        for (GeneralTask a : journalDay.getAppointmentList()) {
-            System.out.print("(" + i + ") ");
-            System.out.println(a.getAction() + " @ " + a.getTime());
-            if (!a.getAction().equals("")) {
-                System.out.println("Location: " + a.getLocation());
-            }
-            System.out.println("");
+        for (MultipleElementsTask s : list) {
+            System.out.println(i + ". " + s.getAction());
             i++;
         }
     }

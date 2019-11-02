@@ -9,7 +9,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AccomplishmentListTest {
-
+/*
     private AccomplishmentList accomplishedList;
 
     @BeforeEach
@@ -69,6 +69,7 @@ public class AccomplishmentListTest {
         assertEquals(50, accomplishedList.getList().size());
     }
 */
+/*
     @Test
     // test case: given an index that's not valid
     public void testInvalidTaskIndex() {
@@ -95,5 +96,5 @@ public class AccomplishmentListTest {
         }
         assertEquals(0, accomplishedList.getList().size());
     }
-
+*/
 }

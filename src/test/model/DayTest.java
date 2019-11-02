@@ -1,7 +1,6 @@
 package model;
 
-import model.exception.InvalidFormatException;
-import model.exception.InvalidTaskDescriptionException;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import model.exception.InvalidTaskNumberException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,56 +17,41 @@ public class DayTest {
 
     @BeforeEach
     public void runBefore() throws IOException {
-        day = new Day("JournalLog");
-    }
-
-    @Test
-    public void testSplitOnSpace() {
-        String testString = "Hello my name is Bob.";
-        ArrayList<String> splitString = new ArrayList<>();
-        splitString.add("Hello");
-        splitString.add("my");
-        splitString.add("name");
-        splitString.add("is");
-        splitString.add("Bob.");
-        assertEquals(splitString, Day.splitOnSpace(testString));
-    }
-
-    @Test
-    public void testPutAtInFront() {
-        String testString = "Hello my name is Bob.";
-        assertEquals("@Hello @my @name @is @Bob.", Day.putAtInFront(testString));
+        ToDoList td = new ToDoList();
+        AccomplishmentList al = new AccomplishmentList();
+        AppointmentList apl = new AppointmentList();
+        day = new Day("JournalLog", td, al, apl);
     }
 
     @Test
     public void testGetAchievementList() {
-        ArrayList<GeneralTask> list = new ArrayList<GeneralTask>();
-        GeneralTask a1 = new Accomplishment("Became vegetarian", "", "", day.list.get("accs"));
-        GeneralTask a2 = new Accomplishment("Passed all my courses", "", "", day.list.get("accs"));
-        GeneralTask a3 = new Accomplishment("Climbed Mount Everest", "", "", day.list.get("accs"));
-        list.add(a1);
-        list.add(a2);
-        list.add(a3);
+        ArrayList<SingleElementTask> list = new ArrayList<SingleElementTask>();
+        SingleElementTask a1 = new Accomplishment("Became vegetarian", day.getSingleElementList().get("accs"));
+        SingleElementTask a2 = new Accomplishment("Passed all my courses", day.getSingleElementList().get("accs"));
+        SingleElementTask a3 = new Accomplishment("Climbed Mount Everest", day.getSingleElementList().get("accs"));
         day.addAchievement("Became vegetarian");
         day.addAchievement("Passed all my courses");
         day.addAchievement("Climbed Mount Everest");
-        assertEquals(list.get(0).getAction(), day.getAchievementList().get(0).getAction());
-        assertEquals(list.get(1).getAction(), day.getAchievementList().get(1).getAction());
-        assertEquals(list.get(2).getAction(), day.getAchievementList().get(2).getAction());
+        list.add(a1);
+        list.add(a2);
+        list.add(a3);
+        assertEquals(list.get(0).getTask().getAction(), day.getAchievementList().get(0).getAction());
+        assertEquals(list.get(1).getTask().getAction(), day.getAchievementList().get(1).getAction());
+        assertEquals(list.get(2).getTask().getAction(), day.getAchievementList().get(2).getAction());
     }
 
     @Test
     public void testGetAppointmentList() {
-        ArrayList<GeneralTask> list = new ArrayList<GeneralTask>();
-        GeneralTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr", day.list.get("apps"));
-        GeneralTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St", day.list.get("apps"));
-        GeneralTask a3 = new Appointment("Meeting with prof", "14:00", "", day.list.get("apps"));
-        list.add(a1);
-        list.add(a2);
-        list.add(a3);
+        ArrayList<MultipleElementsTask> list = new ArrayList<MultipleElementsTask>();
+        MultipleElementsTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr", day.getMultipleElementsList().get("apps"));
+        MultipleElementsTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St", day.getMultipleElementsList().get("apps"));
+        MultipleElementsTask a3 = new Appointment("Meeting with prof", "14:00", "", day.getMultipleElementsList().get("apps"));
         day.addAppointment("Doctor's", "8:00", "213 Infield Dr");
         day.addAppointment("Physiotherapy", "10:00", "34 Lake St");
         day.addAppointment("Meeting with prof", "14:00", "");
+        list.add(a1);
+        list.add(a2);
+        list.add(a3);
         assertEquals(list.get(0).getAction(), day.getAppointmentList().get(0).getAction());
         assertEquals(list.get(1).getAction(), day.getAppointmentList().get(1).getAction());
         assertEquals(list.get(2).getAction(), day.getAppointmentList().get(2).getAction());
@@ -81,10 +65,10 @@ public class DayTest {
 
     @Test
     public void testGetToDoList() {
-        ArrayList<GeneralTask> list = new ArrayList<GeneralTask>();
-        GeneralTask a1 = new Task("Dinner with mom", "8:00", "213 Infield Dr", day.list.get("todos"));
-        GeneralTask a2 = new Task("Physiotherapy", "10:00", "34 Lake St", day.list.get("todos"));
-        GeneralTask a3 = new Task("Meeting with prof", "14:00", "", day.list.get("todos"));
+        ArrayList<MultipleElementsTask> list = new ArrayList<MultipleElementsTask>();
+        MultipleElementsTask a1 = new ToDo ("Dinner with mom", "8:00", "213 Infield Dr", day.getMultipleElementsList().get("todos"));
+        MultipleElementsTask a2 = new ToDo("Physiotherapy", "10:00", "34 Lake St", day.getMultipleElementsList().get("todos"));
+        MultipleElementsTask a3 = new ToDo("Meeting with prof", "14:00", "", day.getMultipleElementsList().get("todos"));
         list.add(a1);
         list.add(a2);
         list.add(a3);
@@ -104,9 +88,9 @@ public class DayTest {
 
     @Test
     public void testDeleteToDo() throws InvalidTaskNumberException {
-        GeneralTask a1 = new Task("Dinner with mom", "8:00", "213 Infield Dr", day.list.get("todos"));
-        GeneralTask a2 = new Task("Physiotherapy", "10:00", "34 Lake St", day.list.get("todos"));
-        GeneralTask a3 = new Task("Meeting with prof", "14:00", "", day.list.get("todos"));
+        MultipleElementsTask a1 = new ToDo("Dinner with mom", "8:00", "213 Infield Dr", day.getMultipleElementsList().get("todos"));
+        MultipleElementsTask a2 = new ToDo("Physiotherapy", "10:00", "34 Lake St", day.getMultipleElementsList().get("todos"));
+        MultipleElementsTask a3 = new ToDo("Meeting with prof", "14:00", "", day.getMultipleElementsList().get("todos"));
         day.addToDo("Dinner with mom", "8:00", "213 Infield Dr");
         day.addToDo("Physiotherapy", "10:00", "34 Lake St");
         day.addToDo("Meeting with prof", "14:00", "");
@@ -118,9 +102,9 @@ public class DayTest {
 
     @Test
     public void testDeleteAppointment() throws InvalidTaskNumberException {
-        GeneralTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr", day.list.get("apps"));
-        GeneralTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St", day.list.get("apps"));
-        GeneralTask a3 = new Appointment("Meeting with prof", "14:00", "", day.list.get("apps"));
+        MultipleElementsTask a1 = new Appointment("Doctor's", "8:00", "213 Infield Dr", day.getMultipleElementsList().get("apps"));
+        MultipleElementsTask a2 = new Appointment("Physiotherapy", "10:00", "34 Lake St", day.getMultipleElementsList().get("apps"));
+        MultipleElementsTask a3 = new Appointment("Meeting with prof", "14:00", "", day.getMultipleElementsList().get("apps"));
         day.addAppointment("Doctor's", "8:00", "213 Infield Dr");
         day.addAppointment("Physiotherapy", "10:00", "34 Lake St");
         day.addAppointment("Meeting with prof", "14:00", "");
@@ -132,9 +116,9 @@ public class DayTest {
 
     @Test
     public void testDeleteAccomplishment() throws InvalidTaskNumberException {
-        GeneralTask a1 = new Accomplishment("Became vegetarian", "", "", day.list.get("accs"));
-        GeneralTask a2 = new Accomplishment("Passed all my courses", "", "", day.list.get("accs"));
-        GeneralTask a3 = new Accomplishment("Climbed Mount Everest", "", "", day.list.get("accs"));
+        SingleElementTask a1 = new Accomplishment("Became vegetarian",  day.getSingleElementList().get("accs"));
+        SingleElementTask a2 = new Accomplishment("Passed all my courses", day.getSingleElementList().get("accs"));
+        SingleElementTask a3 = new Accomplishment("Climbed Mount Everest", day.getSingleElementList().get("accs"));
         day.addAchievement("Became vegetarian");
         day.addAchievement("Passed all my courses");
         day.addAchievement("Climbed Mount Everest");
@@ -142,51 +126,6 @@ public class DayTest {
         assertEquals(2, day.getAchievementList().size());
         assertEquals("Passed all my courses", day.getAchievementList().get(0).getAction());
         assertEquals("Climbed Mount Everest", day.getAchievementList().get(1).getAction());
-    }
-
-    @Test
-    public void testLoadAppointment() {
-        String log = "$% Doctor's 8:00 @238 @Middlefield @Road";
-        ArrayList<String> testString = day.splitOnSpace(log);
-        day.loadAppointment(testString);
-        assertEquals("Doctor's", day.getAppointmentList().get(0).getAction());
-        assertEquals("8:00", day.getAppointmentList().get(0).getTime());
-        assertEquals("238 Middlefield Road", day.getAppointmentList().get(0).getLocation());
-    }
-
-    @Test
-    public void testLoadAchievement() {
-        String log = "$* Had a wonderful birthday";
-        ArrayList<String> testString = day.splitOnSpace(log);
-        day.loadAccomplishment(testString);
-        assertEquals("Had a wonderful birthday", day.getAchievementList().get(0).getAction());
-    }
-
-    @Test
-    public void testLoadToDo() {
-        String log = "$% Wake up 8:00 @The @Birdcoop";
-        ArrayList<String> testString = day.splitOnSpace(log);
-        day.loadToDo(testString);
-        assertEquals("Wake up", day.getToDoList().get(0).getAction());
-        assertEquals("8:00", day.getToDoList().get(0).getTime());
-        assertEquals("The Birdcoop", day.getToDoList().get(0).getLocation());
-    }
-
-    @Test
-    public void testLoadAndSave() throws IOException {
-        day.load();
-        day.addAppointment("Doctor's", "8:00", "238 Middlefield Road");
-        day.save();
-        assertEquals("Doctor's", day.getAppointmentList().get(1).getAction());
-        assertEquals("8:00", day.getAppointmentList().get(1).getTime());
-        assertEquals("238 Middlefield Road", day.getAppointmentList().get(1).getLocation());
-        assertEquals("Physiotherapy", day.getAppointmentList().get(0).getAction());
-        assertEquals("15:00", day.getAppointmentList().get(0).getTime());
-        assertEquals("Physio Office", day.getAppointmentList().get(0).getLocation());
-        assertEquals("Had a wonderful birthday", day.getAchievementList().get(0).getAction());
-        assertEquals("Wake up", day.getToDoList().get(0).getAction());
-        assertEquals("8:00", day.getToDoList().get(0).getTime());
-        assertEquals("The Birdcoop", day.getToDoList().get(0).getLocation());
     }
 
     @Test

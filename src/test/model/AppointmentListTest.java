@@ -20,7 +20,7 @@ public class AppointmentListTest {
     public void testAddOneAppointment() {
         Appointment t = new Appointment("Physiotherapy", "1:00", "45 Potato St", appointmentList);
         appointmentList.addTask(t);
-        assertEquals(1, appointmentList.getList().size());
+        assertEquals(1, appointmentList.getTasks().size());
     }
 
     @Test
@@ -29,7 +29,7 @@ public class AppointmentListTest {
         for (int i = 0; i < 50; i++) {
             appointmentList.addTask(t);
         }
-        assertEquals(1, appointmentList.getList().size());
+        assertEquals(1, appointmentList.getTasks().size());
     }
 
     @Test
@@ -38,37 +38,27 @@ public class AppointmentListTest {
         Appointment t = new Appointment("Doctor's", "10:30", "Doctor's Office", appointmentList);
         appointmentList.addTask(t);
         appointmentList.deleteTask(0);
-        assertEquals(0, appointmentList.getList().size());
+        assertEquals(0, appointmentList.getTasks().size());
     }
-/*
+
     @Test
     // test case: all test cases removed
     public void testAllAppointmentsRemoved() throws InvalidTaskNumberException {
-        Appointment t = new Appointment("Physiotherapy", "1:00", "45 Potato St", appointmentList);
-        for (int i = 0; i < 100; i++) {
-            appointmentList.addTask(t);
-        }
-        for (int i = 99; i >= 0; i--) {
-            appointmentList.deleteTask(i);
-        }
-        assertEquals(0, appointmentList.getList().size());
-    }
-*/
-/*
-    @Test
-    // test case: some test cases removed
-    public void testSomeAppointmentsRemoved() throws InvalidTaskNumberException {
-        Appointment t = new Appointment("Meeting with boss", "1:00", "", appointmentList);
-        for (int i = 0; i < 100; i++) {
-            appointmentList.addTask(t);
-        }
-        for (int i = 50; i > 0; i--) {
-            appointmentList.deleteTask(i);
-        }
-        assertEquals(50, appointmentList.getList().size());
+        Appointment t1 = new Appointment("Physiotherapy", "1:00", "45 Potato St", appointmentList);
+        Appointment t2 = new Appointment("Doctor's", "10:30", "Doctor's Office", appointmentList);
+        Appointment t3 = new Appointment("Meeting with boss", "1:00", "", appointmentList);
+
+        appointmentList.addTask(t1);
+        appointmentList.addTask(t2);
+        appointmentList.addTask(t3);
+
+        assertEquals(3, appointmentList.getTasks().size());
+        appointmentList.deleteTask(0);
+        appointmentList.deleteTask(0);
+        appointmentList.deleteTask(0);
+        assertEquals(0, appointmentList.getTasks().size());
     }
 
-*/
     @Test
     // test case: given an index that's not valid
     public void testInvalidTaskIndex() {
@@ -80,7 +70,7 @@ public class AppointmentListTest {
         } catch (InvalidTaskNumberException e) {
 
         }
-        assertEquals(1, appointmentList.getList().size());
+        assertEquals(1, appointmentList.getTasks().size());
     }
 
     @Test
@@ -93,7 +83,7 @@ public class AppointmentListTest {
         } catch (InvalidTaskNumberException e) {
             fail("Right index!");
         }
-        assertEquals(0, appointmentList.getList().size());
+        assertEquals(0, appointmentList.getTasks().size());
     }
 
 }
