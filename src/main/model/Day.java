@@ -5,7 +5,6 @@ import model.exception.InvalidTaskDescriptionException;
 import model.exception.InvalidTaskNumberException;
 import model.exception.InvalidTimeFormatException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,4 +149,5 @@ public class Day {
     // EFFECT: returns true if time is in valid 24-hr format
     protected boolean isRightTimeFormat(String time) {
         return time.matches("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$");
-    }}
+    }
+}

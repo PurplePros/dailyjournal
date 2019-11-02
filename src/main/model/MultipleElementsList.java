@@ -18,7 +18,6 @@ public class MultipleElementsList {
         if (!tasks.contains(task)) {
             tasks.add(task);
             task.addList(this);
-            System.out.println("Added!");
         }
     }
 
@@ -32,7 +31,6 @@ public class MultipleElementsList {
             if (tasks.contains(item)) {
                 tasks.remove(index);
                 item.removeList(null, index);
-                System.out.println("Removed!");
             }
         }
     }

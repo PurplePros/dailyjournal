@@ -2,8 +2,6 @@ package model;
 
 import model.exception.InvalidTaskNumberException;
 
-import java.util.ArrayList;
-
 public class SingleElementList {
 
     protected MultipleElementsList multipleList;

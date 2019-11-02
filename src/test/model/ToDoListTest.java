@@ -13,7 +13,7 @@ public class ToDoListTest {
     private ToDoList toDoList;
 
     @BeforeEach
-    public void runBefore() throws IOException {
+    public void runBefore() {
         toDoList = new ToDoList();
     }
 
@@ -45,27 +45,19 @@ public class ToDoListTest {
     @Test
     // test case: all test cases removed
     public void testAllToDosRemoved() throws InvalidTaskNumberException {
-        ToDo t = new ToDo("Gym", "1:00", "The Arc", toDoList);
-        for (int i = 0; i < 100; i++) {
-            toDoList.addTask(t);
-        }
-        for (int i = 99; i >= 0; i--) {
-            toDoList.deleteTask(i);
-        }
-        assertEquals(0, toDoList.getTasks().size());
-    }
+        ToDo t1 = new ToDo("Gym", "1:00", "The Arc", toDoList);
+        ToDo t2 = new ToDo("Breakfast", "8:00", "Home", toDoList);
+        ToDo t3 = new ToDo("Work on CPSC210", "4:00", "Koerner's Library", toDoList);
 
-    @Test
-    // test case: some test cases removed
-    public void testSomeToDosRemoved() throws InvalidTaskNumberException {
-        ToDo t1 = new ToDo("Run a marathon", "1:00", "", toDoList);
-        for (int i = 0; i < 100; i++) {
-            toDoList.addTask(t1);
-        }
-        for (int i = 50; i > 0; i--) {
-            toDoList.deleteTask(i);
-        }
-        assertEquals(50, toDoList.getTasks().size());
+        toDoList.addTask(t1);
+        toDoList.addTask(t2);
+        toDoList.addTask(t3);
+
+        toDoList.deleteTask(0);
+        toDoList.deleteTask(0);
+        toDoList.deleteTask(0);
+
+        assertEquals(0, toDoList.getTasks().size());
     }
 
     @Test

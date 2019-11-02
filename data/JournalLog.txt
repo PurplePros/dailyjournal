@@ -1,8 +1,4 @@
 $^ Physiotherapy 15:00 @Physio @Office
 $^ Doctor's 8:00 @238 @Middlefield @Road
-$^ Doctor's 8:00 @238 @Middlefield @Road
-$^ Doctor's 8:00 @238 @Middlefield @Road
-$^ Doctor's 8:00 @238 @Middlefield @Road
-$^ Doctor's 8:00 @238 @Middlefield @Road
 $% Wake up 8:00 @The @Birdcoop
 $* Had a wonderful birthday

@@ -13,7 +13,7 @@ public class Menu {
     private Day journalDay;
 
     // EFFECT: runs user-specified menu with this date
-    public Menu(String date) throws IOException, InvalidUserInputException {
+    public Menu(String date) throws IOException {
         this.date = date;
         processor = new FileProcessor(date);
         processor.load();

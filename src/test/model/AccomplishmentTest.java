@@ -11,7 +11,8 @@ public class AccomplishmentTest {
 
     @BeforeEach
     public void runBefore() {
-        t = new Accomplishment("Doctor's appointment", null);
+        SingleElementList sl = new SingleElementList();
+        t = new Accomplishment("Doctor's appointment", sl);
     }
 
     @Test
@@ -21,7 +22,7 @@ public class AccomplishmentTest {
 
     @Test
     public void testReturnTime() {
-        assertEquals("8:30", t.getTask().getTime());
+        assertEquals("", t.getTask().getTime());
     }
 
     @Test

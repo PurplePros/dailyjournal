@@ -1,7 +1,5 @@
 package model;
 
-import model.exception.InvalidTaskNumberException;
-
 public class SingleElementTask {
 
     protected MultipleElementsTask task;
@@ -12,11 +10,6 @@ public class SingleElementTask {
         task = new MultipleElementsTask(action, "", "", sl.getList());
     }
 
-   /* // EFFECT: returns the task action
-    public String getAction() {
-        return task.getAction();
-    }*/
-
     public void setList(SingleElementList sl) {
         task.setList(sl.getList());
     }
@@ -24,15 +17,6 @@ public class SingleElementTask {
     public MultipleElementsTask getTask() {
         return task;
     }
-
-    /*
-    public void addList(SingleElementList sl) {
-        task.addList(sl.getList());
-    }
-
-    public void removeList(SingleElementList sl, int index) throws InvalidTaskNumberException {
-        task.removeList(sl.getList(),index);
-    }*/
 
     @Override
     public boolean equals(Object obj) {
