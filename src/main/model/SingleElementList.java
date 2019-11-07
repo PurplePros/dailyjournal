@@ -2,7 +2,7 @@ package model;
 
 import model.exception.InvalidTaskNumberException;
 
-public class SingleElementList {
+public class SingleElementList extends Subject {
 
     protected MultipleElementsList multipleList;
 

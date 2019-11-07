@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static network.Weather.*;
+
 public class MainMenu {
 
     // EFFECT: sets up the main menu
@@ -15,8 +17,9 @@ public class MainMenu {
     }
 
     // EFFECT: prints options to either access a previous day, start a new day, or exit
-    private void printMainMenu() {
-        System.out.println("-------------Welcome to Your Journal-------------");
+    private void printMainMenu() throws IOException {
+        System.out.println("-------------Welcome-------------");
+        extractWeather(getWeather());
         System.out.println("a) Start a new day");
         System.out.println("    -> Enter date in the format YYYYMMDD");
         System.out.println("b) Access previous days");

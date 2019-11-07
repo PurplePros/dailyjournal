@@ -1,6 +1,7 @@
 package ui;
 
 import model.*;
+import model.Observer;
 import model.exception.InvalidUserInputException;
 
 import java.io.IOException;
@@ -21,6 +22,9 @@ public class Menu {
         AccomplishmentList ac = processor.getAccomplishmentList();
         AppointmentList ap = processor.getAppointmentList();
         journalDay = new Day(date, td, ac, ap);
+        td.setObserver(journalDay);
+        ac.setObserver(journalDay);
+        ap.setObserver(journalDay);
         runSelectionMenu();
     }
 

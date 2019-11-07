@@ -1,0 +1,4 @@
+$^ Doctor's 8:00 @123 @Infield @St
+$^ Coding for Noobs 5:30 @OC @2470
+$* Ate banana
+$* Went swimming

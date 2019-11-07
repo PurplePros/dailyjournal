@@ -4,12 +4,13 @@ import model.exception.InvalidTaskNumberException;
 
 import java.util.ArrayList;
 
-public class MultipleElementsList {
+public class MultipleElementsList extends Subject {
 
     protected ArrayList<MultipleElementsTask> tasks;
 
     // EFFECT: creates a new empty list that takes in general tasks
     public MultipleElementsList() {
+        super();
         tasks = new ArrayList<>();
     }
 
@@ -17,6 +18,7 @@ public class MultipleElementsList {
     public void addTask(MultipleElementsTask task) {
         if (!tasks.contains(task)) {
             tasks.add(task);
+            notifyObserver(true);
             task.addList(this);
         }
     }
@@ -30,6 +32,7 @@ public class MultipleElementsList {
             MultipleElementsTask item = tasks.get(index);
             if (tasks.contains(item)) {
                 tasks.remove(index);
+                notifyObserver(false);
                 item.removeList(null, index);
             }
         }

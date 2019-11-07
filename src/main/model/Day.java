@@ -4,12 +4,13 @@ import model.exception.InvalidFormatException;
 import model.exception.InvalidTaskDescriptionException;
 import model.exception.InvalidTaskNumberException;
 import model.exception.InvalidTimeFormatException;
+import ui.Menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Day {
+public class Day extends Observer {
 
     private HashMap<String, SingleElementList> singleElementList;
     private HashMap<String, MultipleElementsList> multipleElementsList;
@@ -59,6 +60,7 @@ public class Day {
             if (accomplishment.length() > 0 && !accomplishment.startsWith("$%") && !accomplishment.startsWith("$^")) {
                 SingleElementTask action = new Accomplishment(accomplishment, singleElementList.get("accs"));
                 singleElementList.get("accs").addTask(action.getTask());
+                //notifyObserver(true);
             } else {
                 throw new InvalidTaskDescriptionException();
             }
@@ -73,6 +75,7 @@ public class Day {
     public void deleteAchievement(int index) {
         try {
             singleElementList.get("accs").deleteTask(index - 1);
+            //notifyObserver(false);
         } catch (InvalidTaskNumberException e) {
             System.out.println("Invalid task number!");
             System.out.println("Please enter a number between 1 and " + getAchievementList().size());
@@ -93,6 +96,7 @@ public class Day {
             } else {
                 MultipleElementsTask todo = new ToDo(action, time, location, multipleElementsList.get("todos"));
                 multipleElementsList.get("todos").addTask(todo);
+                //notifyObserver(true);
             }
         } catch (InvalidFormatException e) {
             System.out.println("Invalid Format!");
@@ -105,6 +109,7 @@ public class Day {
     public void deleteToDo(int index) {
         try {
             multipleElementsList.get("todos").deleteTask(index - 1);
+            //notifyObserver(false);
         } catch (InvalidTaskNumberException e) {
             System.out.println("Invalid task number!");
             System.out.println("Please enter a number between 1 and " + getToDoList().size());
@@ -125,6 +130,7 @@ public class Day {
             } else {
                 MultipleElementsTask todo = new Appointment(action, time, location, multipleElementsList.get("apps"));
                 multipleElementsList.get("apps").addTask(todo);
+                //notifyObserver(true);
             }
         } catch (InvalidTaskDescriptionException e) {
             System.out.println("Invalid format!");
@@ -139,6 +145,7 @@ public class Day {
     public void deleteAppointment(int index) {
         try {
             multipleElementsList.get("apps").deleteTask(index - 1);
+            //notifyObserver(false);
         } catch (InvalidTaskNumberException e) {
             System.out.println("Invalid task number!");
             System.out.println("Please enter a number between 1 and " + getAppointmentList().size());
@@ -149,5 +156,13 @@ public class Day {
     // EFFECT: returns true if time is in valid 24-hr format
     protected boolean isRightTimeFormat(String time) {
         return time.matches("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$");
+    }
+
+    public void update(boolean added) {
+        if (added) {
+            System.out.println("Added!");
+        } else {
+            System.out.println("Removed!");
+        }
     }
 }

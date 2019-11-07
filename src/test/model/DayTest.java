@@ -1,8 +1,11 @@
 package model;
 
+import ui.Menu;
+
 import model.exception.InvalidTaskNumberException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +22,11 @@ public class DayTest {
         AccomplishmentList al = new AccomplishmentList();
         AppointmentList apl = new AppointmentList();
         day = new Day("JournalLog", td, al, apl);
+        td.setObserver(day);
+        al.setObserver(day);
+        apl.setObserver(day);
     }
+
 
     @Test
     public void testGetAchievementList() {
