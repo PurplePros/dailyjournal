@@ -38,13 +38,14 @@ public class Weather {
         }
     }
 
-    public static void extractWeather(StringBuilder sb) {
+    public static String extractWeather(StringBuilder sb) {
         int minIndexOfTemperature = sb.indexOf("temp") + 6;
         int endingIndexOfTemperature = sb.indexOf("pressure") - 2;
         int minIndexOfCity = sb.indexOf("name") + 7;
         int endingIndexOfCity = sb.indexOf("cod") - 3;
         String city = sb.substring(minIndexOfCity, endingIndexOfCity);
         String temperature = sb.substring(minIndexOfTemperature, endingIndexOfTemperature);
-        System.out.println("Current weather in " + city + " is " + temperature + "°C");
+        String weatherLabel = "Current weather in " + city + " is " + temperature + "°C";
+        return weatherLabel;
     }
 }

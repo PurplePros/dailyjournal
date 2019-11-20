@@ -1,4 +1,7 @@
+$% Homework 12:00
+$% Gym 8:00 @The @Arc
 $^ Doctor's 8:00 @123 @Infield @St
 $^ Coding for Noobs 5:30 @OC @2470
+$^ Eye doctor appointment 5:30 @The @Village
 $* Ate banana
 $* Went swimming

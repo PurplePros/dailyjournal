@@ -54,7 +54,7 @@ public class FileProcessor {
                 loadAppointment(words);
             } else if (words.get(0).equals("$*")) {
                 loadAccomplishment(words);
-            } else {
+            } else if (words.get(0).equals("$%")) {
                 loadToDo(words);
             }
         }

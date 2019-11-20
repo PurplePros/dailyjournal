@@ -25,9 +25,9 @@ public class Menu {
         td.setObserver(journalDay);
         ac.setObserver(journalDay);
         ap.setObserver(journalDay);
-        runSelectionMenu();
+        //runSelectionMenu();
     }
-
+/*
     // EFFECT: prints the options to either access the to-do, appointment, or accomplishment lists
     private void printSelectionMenu(String date) {
         System.out.println("-------------" + date + "-------------");
@@ -90,7 +90,12 @@ public class Menu {
             }
         }
     }
+*/
+    public Day getDay() {
+        return journalDay;
+    }
 
+    /*
     // MODIFY: this
     // EFFECT: takes in user input and executes next steps
     // REQUIRE: user input must match one of the listed options
@@ -105,38 +110,22 @@ public class Menu {
             throw new InvalidUserInputException();
         }
     }
-
+*/
     // MODIFY: this
     // EFFECT: prompts user and determines next steps
     // REQUIRE: user input must match one of the listed options
-    public void runAccomplishmentMenu() throws InvalidUserInputException {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            printAccomplishmentMenu();
-            String input = scanner.nextLine();
-            if (input.toLowerCase().equals("a")) {
-                printSingleList(journalDay.getAchievementList());
-            } else if (input.toLowerCase().equals("b")) {
-                String accomplishment = scanner.nextLine();
-                journalDay.addAchievement(accomplishment);
-            } else if (input.toLowerCase().equals("c")) {
-                int index = scanner.nextInt();
-                journalDay.deleteAchievement(index);
-            } else if (input.toLowerCase().equals("d")) {
-                break;
-            } else {
-                throw new InvalidUserInputException();
-            }
-        }
+    public void takeInputAccomplishment(String accomplishment) {
+        journalDay.addAchievement(accomplishment);
     }
 
+/*
     // MODIFY: this
     // EFFECT: prompts user and determines next steps
     // REQUIRE: user input must match one of the listed options
     public void runToDoMenu() throws InvalidUserInputException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            printToDoMenu();
+//            printToDoMenu();
             String input = scanner.nextLine();
             if (input.toLowerCase().equals("d")) {
                 break;
@@ -144,35 +133,40 @@ public class Menu {
                 takeInputToDo(input);
             }
         }
-    }
+    }*/
 
     // MODIFY: this
     // EFFECT: takes in user input and executes next steps
     // REQUIRE: user input must match one of the listed options
-    public void takeInputToDo(String input) throws InvalidUserInputException {
-        Scanner scanner = new Scanner(System.in);
-        if (input.toLowerCase().equals("a")) {
-            printMultipleList(journalDay.getToDoList());
-        } else if (input.toLowerCase().equals("b")) {
-            String action = scanner.nextLine();
-            String time = scanner.nextLine();
-            String location = scanner.nextLine();
-            journalDay.addToDo(action, time, location);
-        } else if (input.toLowerCase().equals("c")) {
-            int index = scanner.nextInt();
-            journalDay.deleteToDo(index);
-        } else {
-            throw new InvalidUserInputException();
-        }
+    public void takeInputToDo(String action, String time, String location) {
+////        Scanner scanner = new Scanner(System.in);
+////        if (input.toLowerCase().equals("a")) {
+////            printMultipleList(journalDay.getToDoList());
+//            String action = scanner.nextLine();
+//            String time = scanner.nextLine();
+//            String location = scanner.nextLine();
+        journalDay.addToDo(action, time, location);
     }
 
+    public void removeToDo(int index) {
+        journalDay.deleteToDo(index);
+    }
+
+    public void removeAppointment(int index) {
+        journalDay.deleteAppointment(index);
+    }
+
+    public void removeAccomplishment(int index) {
+        journalDay.deleteAchievement(index);
+    }
+/*
     // MODIFY: this
     // EFFECT: prompts user about what they want to do and executes the next steps
     // REQUIRE: user input must match one of the listed options
     public void runAppointmentMenu() throws InvalidUserInputException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            printAppointmentMenu();
+//            printAppointmentMenu();
             String input = scanner.nextLine();
             if (input.toLowerCase().equals("d")) {
                 break;
@@ -180,28 +174,38 @@ public class Menu {
                 takeInputAppointments(input);
             }
         }
-    }
+    }*/
 
     // MODIFY: this
     // EFFECT: takes in user input and executes next steps
     // REQUIRE: user input must match one of the listed options
-    public void takeInputAppointments(String input) throws InvalidUserInputException {
-        Scanner scanner = new Scanner(System.in);
-        if (input.toLowerCase().equals("a")) {
-            printMultipleList(journalDay.getAppointmentList());
-        } else if (input.toLowerCase().equals("b")) {
-            String action = scanner.nextLine();
-            String time = scanner.nextLine();
-            String location = scanner.nextLine();
-            journalDay.addAppointment(action, time, location);
-        } else if (input.toLowerCase().equals("c")) {
-            int index = scanner.nextInt();
-            journalDay.deleteAppointment(index);
-        } else {
-            throw new InvalidUserInputException();
-        }
+    public void takeInputAppointments(String action, String time, String location) {
+        journalDay.addAppointment(action, time, location);
     }
 
+    public ArrayList<String> toStringMultipleList(ArrayList<MultipleElementsTask> list) {
+        int i = 1;
+        ArrayList<String> printedList = new ArrayList<>();
+        for (MultipleElementsTask t : list) {
+            printedList.add("(" + i + ") ");
+            printedList.add(t.getAction() + " @ " + t.getTime());
+            printedList.add("Location: " + t.getLocation());
+            i++;
+        }
+        return printedList;
+    }
+
+    public ArrayList<String> toStringSingleList(ArrayList<MultipleElementsTask> list) {
+        int i = 1;
+        ArrayList<String> printedList = new ArrayList<>();
+        for (MultipleElementsTask t : list) {
+            printedList.add("(" + i + ") ");
+            printedList.add(t.getAction());
+            i++;
+        }
+        return printedList;
+    }
+/*
     public void printMultipleList(ArrayList<MultipleElementsTask> list) {
         int i = 1;
         for (MultipleElementsTask t : list) {
@@ -222,5 +226,5 @@ public class Menu {
             System.out.println(i + ". " + s.getAction());
             i++;
         }
-    }
+    }*/
 }
