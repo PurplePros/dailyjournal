@@ -27,9 +27,6 @@ public class DayTest {
         AccomplishmentList al = new AccomplishmentList();
         AppointmentList apl = new AppointmentList();
         day = new Day("JournalLog", td, al, apl);
-        td.setObserver(day);
-        al.setObserver(day);
-        apl.setObserver(day);
     }
 
 

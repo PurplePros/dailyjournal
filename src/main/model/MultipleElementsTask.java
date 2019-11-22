@@ -10,7 +10,6 @@ public class MultipleElementsTask {
     protected MultipleElementsList ml;
 
     // EFFECT: creates a new general task given the action, time, and location
-    // REQUIRE: task action length > 0
     public MultipleElementsTask(String action, String time, String location, MultipleElementsList ml) {
         this.action = action;
         this.time = time;
@@ -33,10 +32,14 @@ public class MultipleElementsTask {
         return location;
     }
 
+    // EFFECT: sets this' multiple elements list to ml
+    // MODIFIES: this
     public void setList(MultipleElementsList ml) {
         this.ml = ml;
     }
 
+    // EFFECT: adds to this' multiple elements list
+    // MODIFIES: this and ml
     public void addList(MultipleElementsList ml) {
         if (!this.ml.equals(ml)) {
             setList(ml);
@@ -44,6 +47,8 @@ public class MultipleElementsTask {
         }
     }
 
+    // EFFECT: removes this from multiple elements list
+    // EFFECT: modifies this and ml
     public void removeList(MultipleElementsList ml, int index) throws InvalidTaskNumberException {
         if (this.ml.equals(ml)) {
             setList(null);
@@ -51,6 +56,7 @@ public class MultipleElementsTask {
         }
     }
 
+    // EFFECT: return if this is equal to obj
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -65,6 +71,7 @@ public class MultipleElementsTask {
         return this.action.equals(other.action) && this.time.equals(other.time) && this.location.equals(other.location);
     }
 
+    // EFFECT: returns the hash code of this
     @Override
     public int hashCode() {
         String hash = action + time + location;

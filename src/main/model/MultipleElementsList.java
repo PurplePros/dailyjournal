@@ -4,7 +4,7 @@ import model.exception.InvalidTaskNumberException;
 
 import java.util.ArrayList;
 
-public class MultipleElementsList extends Subject {
+public class MultipleElementsList {
 
     protected ArrayList<MultipleElementsTask> tasks;
 
@@ -14,17 +14,17 @@ public class MultipleElementsList extends Subject {
         tasks = new ArrayList<>();
     }
 
-    // EFFECT: adds an appointment to the existing list and prints a success message
+    // EFFECT: adds an entry to the existing list if a duplicate does not already exist
+    // MODIFIES: this
     public void addTask(MultipleElementsTask task) {
         if (!tasks.contains(task)) {
             tasks.add(task);
-            notifyObserver(true);
             task.addList(this);
         }
     }
 
-    // EFFECT: deletes an appointment from existing list and prints a success message
-    // REQUIRE: index < size of list
+    // EFFECT: deletes an entry from existing list and exception is thrown if the index number is invalid
+    // MODIFIES: this
     public void deleteTask(int index) throws InvalidTaskNumberException {
         if (index >= tasks.size()) {
             throw new InvalidTaskNumberException();
@@ -32,17 +32,17 @@ public class MultipleElementsList extends Subject {
             MultipleElementsTask item = tasks.get(index);
             if (tasks.contains(item)) {
                 tasks.remove(index);
-                notifyObserver(false);
                 item.removeList(null, index);
             }
         }
     }
 
-    // EFFECT: returns list
+    // EFFECT: returns multiple elements list
     public ArrayList<MultipleElementsTask> getTasks() {
         return tasks;
     }
 
+    // EFFECT: returns true if this is equivalent to obj
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -58,6 +58,7 @@ public class MultipleElementsList extends Subject {
 
     }
 
+    // EFFECT: returns the hashCode of the list of multiple elements
     @Override
     public int hashCode() {
         return tasks.hashCode();

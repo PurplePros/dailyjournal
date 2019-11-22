@@ -2,7 +2,7 @@ package model;
 
 import model.exception.InvalidTaskNumberException;
 
-public class SingleElementList extends Subject {
+public class SingleElementList {
 
     protected MultipleElementsList multipleList;
 
@@ -29,11 +29,13 @@ public class SingleElementList extends Subject {
         return multipleList;
     }
 
+    // EFFECT: returns true of this is equal to obj
     @Override
     public boolean equals(Object obj) {
         return multipleList.equals(obj);
     }
 
+    // EFFECT: returns the hashCode of this
     @Override
     public int hashCode() {
         return multipleList.hashCode();

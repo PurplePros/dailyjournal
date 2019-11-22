@@ -164,6 +164,7 @@ public class JournalWindow extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECT: saves data to text file when this is closed
     public void exitProgram() {
         try {
             selectionMenu.getProcessor().save();

@@ -1,16 +1,14 @@
 package model;
 
-import model.exception.InvalidFormatException;
 import model.exception.InvalidTaskDescriptionException;
 import model.exception.InvalidTaskNumberException;
 import model.exception.InvalidTimeFormatException;
-import ui.Menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Day extends Observer {
+public class Day {
 
     private HashMap<String, SingleElementList> singleElementList;
     private HashMap<String, MultipleElementsList> multipleElementsList;
@@ -28,15 +26,17 @@ public class Day extends Observer {
     }
 
 
-    // EFFECT: returns accomplishments
+    // EFFECT: returns accomplishment list
     public ArrayList<MultipleElementsTask> getAchievementList() {
         return singleElementList.get("accs").getList().getTasks();
     }
 
+    // EFFECT: returns current list of entries that are of a single element type
     public HashMap<String, SingleElementList> getSingleElementList() {
         return singleElementList;
     }
 
+    // EFFECT: returns current list of entries that are of a multiple elements type
     public HashMap<String, MultipleElementsList> getMultipleElementsList() {
         return multipleElementsList;
     }
@@ -46,13 +46,13 @@ public class Day extends Observer {
         return multipleElementsList.get("todos").getTasks();
     }
 
-    // EFFECT: returns appointments
+    // EFFECT: returns appointment list
     public ArrayList<MultipleElementsTask> getAppointmentList() {
         return multipleElementsList.get("apps").getTasks();
     }
 
     // MODIFY: this
-    // EFFECT: takes user's information about new achievement and adds to list
+    // EFFECT: creates a new accomplishment with given description and adds it to accomplishment list
     // REQUIRE: accomplishment must be a non-empty string
     //          accomplishment must not start with the string $% or $^
     public void addAchievement(String accomplishment) throws InvalidTaskDescriptionException {
@@ -65,14 +65,13 @@ public class Day extends Observer {
     }
 
     // MODIFY: this
-    // EFFECT: takes user's information about which achievement to delete and deletes from list
-    // REQUIRE: user input must be a valid achievement number
+    // EFFECT: deletes achievement at given index number from achievement list
     public void deleteAchievement(int index) throws InvalidTaskNumberException {
         singleElementList.get("accs").deleteTask(index - 1);
     }
 
     // MODIFY: this
-    // EFFECT: takes user's information about new to-do and adds to list
+    // EFFECT: creates new to-do with given description, time, and location and adds to to-do list
     // REQUIRE: task description must be a non-empty string
     //          description must not start with the strings $^ or $*
     //          if time is non-empty, time must be in valid 24-hour format
@@ -89,14 +88,13 @@ public class Day extends Observer {
     }
 
     // MODIFY: this
-    // EFFECT: takes user's information about which to-do to delete and deletes from list
-    // REQUIRE: input must be a valid task number
+    // EFFECT: deletes achievement at given index number from achievement list
     public void deleteToDo(int index) throws InvalidTaskNumberException {
         multipleElementsList.get("todos").deleteTask(index - 1);
     }
 
     // MODIFY: this
-    // EFFECT: takes user's information about new appointment and adds to list
+    // EFFECT: creates a new appointment with given description, time, and location and adds to appointment list
     // REQUIRE: appointment description must be a non-empty string
     //          description must not start with $% or $*
     //          appointment time must be a non-empty string and in the 24-hour format
@@ -109,7 +107,6 @@ public class Day extends Observer {
         } else {
             MultipleElementsTask todo = new Appointment(action, time, location, multipleElementsList.get("apps"));
             multipleElementsList.get("apps").addTask(todo);
-            //notifyObserver(true);
         }
     }
 
@@ -123,13 +120,5 @@ public class Day extends Observer {
     // EFFECT: returns true if time is in valid 24-hr format
     protected boolean isRightTimeFormat(String time) {
         return time.matches("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$");
-    }
-
-    public void update(boolean added) {
-        if (added) {
-            System.out.println("Added!");
-        } else {
-            System.out.println("Removed!");
-        }
     }
 }

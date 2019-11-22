@@ -19,6 +19,7 @@ public class AddElementWindow extends JFrame implements ActionListener {
     private JEditorPane descriptionPaneAcc;
     private JournalWindow journalWindow;
 
+    // EFFECT: creates a new AddElementWindow
     public AddElementWindow(Menu menu, JournalWindow journalWindow) {
         super();
         this.menu = menu;
@@ -26,6 +27,8 @@ public class AddElementWindow extends JFrame implements ActionListener {
         displayGui();
     }
 
+    // EFFECT: sets settings of this
+    // MODIFY: this
     public void displayGui() {
         setBounds(100, 100, 681, 473);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,6 +38,8 @@ public class AddElementWindow extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    // EFFECT: adds gui components to this
+    // MODIFY: this
     public void addToPane(Container pane) {
         //Main pane
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -61,6 +66,8 @@ public class AddElementWindow extends JFrame implements ActionListener {
         addAccPanelElements(accPanel);
     }
 
+    // EFFECTS: adds labels to taskPanel
+    // MODIFY: taskPanel
     public void addLabelsToTaskPanel(JPanel taskPanel) {
         JLabel lblDescription = new JLabel("Description");
         lblDescription.setBounds(15, 33, 136, 22);
@@ -75,6 +82,8 @@ public class AddElementWindow extends JFrame implements ActionListener {
         taskPanel.add(lblLocation);
     }
 
+    // EFFECTS: adds user input boxes and button to panel
+    // MODIFY: taskPanel
     public void addUserFunctionToTaskPanel(JPanel taskPanel) {
         JButton btnEnter = new JButton("Enter");
         btnEnter.setBounds(524, 338, 115, 29);
@@ -93,9 +102,10 @@ public class AddElementWindow extends JFrame implements ActionListener {
         locationPane = new JEditorPane();
         locationPane.setBounds(15, 292, 257, 26);
         taskPanel.add(locationPane);
-
     }
 
+    // EFFECTS: adds labels to appPanel
+    // MODIFY: appPanel
     public void addLabelsToAppPanel(JPanel appPanel) {
         JLabel descriptionApp = new JLabel("Description");
         descriptionApp.setBounds(15, 34, 79, 20);
@@ -110,6 +120,8 @@ public class AddElementWindow extends JFrame implements ActionListener {
         appPanel.add(locationApp);
     }
 
+    // EFFECTS: adds user input boxes and button to appPanel
+    // MODIFY: appPanel
     public void addUserFunctionToAppPanel(JPanel appPanel) {
         JButton buttonApp = new JButton("Enter");
         buttonApp.setBounds(533, 341, 106, 26);
@@ -130,6 +142,8 @@ public class AddElementWindow extends JFrame implements ActionListener {
         appPanel.add(locationPaneApp);
     }
 
+    // EFFECTS: adds GUI components to panel
+    // MODIFY: accPanel
     public void addAccPanelElements(JPanel accPanel) {
         descriptionPaneAcc = new JEditorPane();
         descriptionPaneAcc.setBounds(15, 86, 624, 162);
@@ -146,6 +160,7 @@ public class AddElementWindow extends JFrame implements ActionListener {
         buttonAcc.setActionCommand("enterAcc");
     }
 
+    // EFFECT: calls me
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
@@ -162,28 +177,33 @@ public class AddElementWindow extends JFrame implements ActionListener {
             }
             update();
         } catch (InvalidFormatException exception) {
-            JOptionPane.showMessageDialog(null, "Invalid format, check your description or time for errors");
+            JOptionPane.showMessageDialog(null,
+                    "Invalid format, check your description or time for errors");
         }
     }
 
+    // EFFECT: displays current list of appointments, achievements, and to-dos
     public void update() {
         journalWindow.displayAppointments();
         journalWindow.displayToDos();
         journalWindow.displayAchievements();
     }
 
+    // EFFECT: clears out text fields in the task panel
     public void resetTaskFields() {
         descriptionPaneTask.setText("");
         timePane.setText("");
         locationPane.setText("");
     }
 
+    // EFFECT: clears out text fields in the appointment panel
     public void resetAppointmentFields() {
         descriptionPaneApp.setText("");
         timePaneApp.setText("");
         locationPaneApp.setText("");
     }
 
+    // EFFECT: clears out text field in the accomplishment panel
     public void resetAccomplishmentFields() {
         descriptionPaneAcc.setText("");
     }

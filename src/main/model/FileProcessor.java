@@ -29,9 +29,6 @@ public class FileProcessor {
     // EFFECT: prints current appointments, to-dos, and achievements into text file
     public void save() throws FileNotFoundException, UnsupportedEncodingException {
         PrintWriter writer = new PrintWriter("data/" + date + ".txt", "UTF-8");
-        //ArrayList<MultipleElementsTask> appointments = toDoList;
-        //ArrayList<MultipleElementsTask> todos = multipleList;
-        //ArrayList<SingleElementTask> accomplishments = singleList;
         for (MultipleElementsTask t : appointmentList.getTasks()) {
             writer.println("$^ " + t.getAction() + " " + t.getTime() + " " + putAtInFront(t.getLocation()));
         }
@@ -114,6 +111,7 @@ public class FileProcessor {
         return new ArrayList<>(Arrays.asList(splits));
     }
 
+    // MODIFY: location
     // EFFECT: puts a @ in front of every single word of given string
     public static String putAtInFront(String location) {
         ArrayList<String> words = splitOnSpace(location);
@@ -124,14 +122,17 @@ public class FileProcessor {
         return output.trim();
     }
 
+    // EFFECT: returns to-do list
     public ToDoList getToDoList() {
         return toDoList;
     }
 
+    // EFFECT: returns appointment list
     public AppointmentList getAppointmentList() {
         return appointmentList;
     }
 
+    // EFFECT: returns accomplishment list
     public AccomplishmentList getAccomplishmentList() {
         return accomplishedList;
     }

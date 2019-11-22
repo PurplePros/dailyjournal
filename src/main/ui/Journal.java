@@ -8,7 +8,8 @@ import java.io.IOException;
 public class Journal {
 
     // EFFECT: loads the main menu
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IOException, IllegalAccessException {
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
+            InstantiationException, IOException, IllegalAccessException {
         new MainWindow();
     }
 }

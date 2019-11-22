@@ -2,7 +2,6 @@ package ui;
 
 import model.*;
 import model.exception.InvalidFormatException;
-import model.exception.InvalidTaskDescriptionException;
 import model.exception.InvalidTaskNumberException;
 
 import java.io.IOException;
@@ -23,47 +22,55 @@ public class Menu {
         AccomplishmentList ac = processor.getAccomplishmentList();
         AppointmentList ap = processor.getAppointmentList();
         journalDay = new Day(date, td, ac, ap);
-        td.setObserver(journalDay);
-        ac.setObserver(journalDay);
-        ap.setObserver(journalDay);
-        //runSelectionMenu();
     }
 
+    // EFFECT: returns file processor
     public FileProcessor getProcessor() {
         return processor;
     }
 
+    // EFFECT: returns journalDay
     public Day getDay() {
         return journalDay;
     }
 
-    public void takeInputAccomplishment(String accomplishment) throws InvalidTaskDescriptionException {
+    // EFFECT: adds an achievement to current day's achievement list with given description
+    // MODIFY: this
+    public void takeInputAccomplishment(String accomplishment) throws InvalidFormatException {
         journalDay.addAchievement(accomplishment);
     }
 
+    // EFFECT: adds to-do to current day's to-do list with given description, time, and location
+    // MODIFY: this
     public void takeInputToDo(String action, String time, String location) throws InvalidFormatException {
         journalDay.addToDo(action, time, location);
     }
 
-    public void removeToDo(int index) throws InvalidTaskNumberException {
-        journalDay.deleteToDo(index);
-    }
-
-    public void removeAppointment(int index) throws InvalidTaskNumberException {
-        journalDay.deleteAppointment(index);
-    }
-
-    public void removeAccomplishment(int index) throws InvalidTaskNumberException {
-        journalDay.deleteAchievement(index);
-    }
-
+    // EFFECT: adds appointment to current day's appointment list with given description, time, and location
     // MODIFY: this
-    // EFFECT: takes in user input and executes next steps
-    // REQUIRE: user input must match one of the listed options
     public void takeInputAppointments(String action, String time, String location) throws InvalidFormatException {
         journalDay.addAppointment(action, time, location);
     }
 
+    // EFFECT: removes to-do from current day's to-do list at given position
+    // MODIFY: this
+    public void removeToDo(int index) throws InvalidTaskNumberException {
+        journalDay.deleteToDo(index);
+    }
+
+    // EFFECT: removes appointment from current day's appointment list at given position
+    // MODIFY: this
+    public void removeAppointment(int index) throws InvalidTaskNumberException {
+        journalDay.deleteAppointment(index);
+    }
+
+    // EFFECT: removes accomplishment from current day's accomplishment list at given position
+    // MODIFY: this
+    public void removeAccomplishment(int index) throws InvalidTaskNumberException {
+        journalDay.deleteAchievement(index);
+    }
+
+    // EFFECT: returns list as a string in a readable format
     public ArrayList<String> toStringMultipleList(ArrayList<MultipleElementsTask> list) {
         int i = 1;
         ArrayList<String> printedList = new ArrayList<>();
@@ -76,6 +83,7 @@ public class Menu {
         return printedList;
     }
 
+    // EFFECT: returns list as a string in a readable format
     public ArrayList<String> toStringSingleList(ArrayList<MultipleElementsTask> list) {
         int i = 1;
         ArrayList<String> printedList = new ArrayList<>();

@@ -9,5 +9,4 @@ public class ToDo extends MultipleElementsTask {
     public ToDo(String action, String time, String location, MultipleElementsList ml) {
         super(action, time, location, ml);
     }
-
 }

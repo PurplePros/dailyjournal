@@ -10,19 +10,24 @@ public class SingleElementTask {
         task = new MultipleElementsTask(action, "", "", sl.getList());
     }
 
+    // EFFECT: sets this' list to sl
+    // MODIFIES: this
     public void setList(SingleElementList sl) {
         task.setList(sl.getList());
     }
 
+    // EFFECT: returns the task
     public MultipleElementsTask getTask() {
         return task;
     }
 
+    // EFFECT: returns true if this is equal to obj
     @Override
     public boolean equals(Object obj) {
         return task.equals(obj);
     }
 
+    // EFFECT: returns the hashCode of this
     @Override
     public int hashCode() {
         return task.hashCode();
