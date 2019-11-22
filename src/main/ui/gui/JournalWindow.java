@@ -1,11 +1,15 @@
-package gui;
+package ui.gui;
 
 import ui.Menu;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class JournalWindow extends JFrame implements ActionListener {
@@ -26,7 +30,13 @@ public class JournalWindow extends JFrame implements ActionListener {
 
     public void displayGUI() {
         getContentPane().setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                exitProgram();
+            }
+        });
         setBounds(100, 100, 748, 1012);
         addToPane(getContentPane());
 
@@ -34,6 +44,15 @@ public class JournalWindow extends JFrame implements ActionListener {
     }
 
     public void addToPane(Container pane) {
+        displayToDoGui(pane);
+        displayAppGui(pane);
+        displayAccGui(pane);
+
+        displayLabels(pane);
+        displayButtons(pane);
+    }
+
+    public void displayToDoGui(Container pane) {
         todo = new JTextArea();
         todo.setFont(new Font("Lucida Sans", Font.PLAIN, 16));
         JScrollPane todos = new JScrollPane(todo);
@@ -42,7 +61,9 @@ public class JournalWindow extends JFrame implements ActionListener {
         todo.setLineWrap(true);
         todo.setEditable(false);
         todo.setWrapStyleWord(true);
+    }
 
+    public void displayAppGui(Container pane) {
         apps = new JTextArea();
         apps.setFont(new Font("Lucida Sans", Font.PLAIN, 16));
         JScrollPane appointments = new JScrollPane(apps);
@@ -51,16 +72,9 @@ public class JournalWindow extends JFrame implements ActionListener {
         apps.setLineWrap(true);
         apps.setEditable(false);
         apps.setWrapStyleWord(true);
+    }
 
-        accs = new JTextArea();
-        accs.setFont(new Font("Lucida Sans", Font.PLAIN, 16));
-        JScrollPane achievements = new JScrollPane(accs);
-        achievements.setBounds(379, 593, 332, 267);
-        pane.add(achievements);
-        accs.setLineWrap(true);
-        accs.setEditable(false);
-        accs.setWrapStyleWord(true);
-
+    public void displayLabels(Container pane) {
         JLabel lblTodoList = new JLabel("To-Do List");
         lblTodoList.setFont(new Font("SimHei", Font.BOLD, 24));
         lblTodoList.setBounds(33, 16, 146, 38);
@@ -75,7 +89,20 @@ public class JournalWindow extends JFrame implements ActionListener {
         lblAchievements.setFont(new Font("SimHei", Font.BOLD, 24));
         lblAchievements.setBounds(406, 556, 218, 38);
         pane.add(lblAchievements);
+    }
 
+    public void displayAccGui(Container pane) {
+        accs = new JTextArea();
+        accs.setFont(new Font("Lucida Sans", Font.PLAIN, 16));
+        JScrollPane achievements = new JScrollPane(accs);
+        achievements.setBounds(379, 593, 332, 267);
+        pane.add(achievements);
+        accs.setLineWrap(true);
+        accs.setEditable(false);
+        accs.setWrapStyleWord(true);
+    }
+
+    public void displayButtons(Container pane) {
         JButton btnAdd = new JButton("ADD");
         btnAdd.setBounds(82, 876, 193, 67);
         pane.add(btnAdd);
@@ -134,6 +161,18 @@ public class JournalWindow extends JFrame implements ActionListener {
             new AddElementWindow(selectionMenu, this);
         } else if (e.getActionCommand().equals("remove")) {
             new RemoveElementWindow(selectionMenu, this);
+        }
+    }
+
+    public void exitProgram() {
+        try {
+            selectionMenu.getProcessor().save();
+            dispose();
+            System.exit(0);
+        } catch (UnsupportedEncodingException e) {
+            JOptionPane.showMessageDialog(null,"File not saved. Try again.");
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "File not found!");
         }
     }
 }

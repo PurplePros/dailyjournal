@@ -1,5 +1,6 @@
-package gui;
+package ui.gui;
 
+import model.exception.InvalidTaskNumberException;
 import ui.Menu;
 
 import javax.swing.*;
@@ -27,7 +28,6 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
         setBounds(100, 100, 450, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(null);
-
         addToPane(getContentPane());
         setVisible(true);
     }
@@ -44,12 +44,25 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
         pane.add(index);
         index.setColumns(10);
 
+        addButtonsToPane(pane);
+    }
+
+    public void addButtonsToPane(Container pane) {
         JButton btnRemoveItem = new JButton("Remove Item");
         btnRemoveItem.setBounds(15, 169, 158, 29);
         pane.add(btnRemoveItem);
         btnRemoveItem.addActionListener(this);
         btnRemoveItem.setActionCommand("remove");
 
+        displayRadioButtons(pane);
+
+        ButtonGroup options = new ButtonGroup();
+        options.add(rdbtnAccomplishment);
+        options.add(rdbtnAppointment);
+        options.add(rdbtnTask);
+    }
+
+    public void displayRadioButtons(Container pane) {
         rdbtnTask = new JRadioButton("Task");
         rdbtnTask.setBounds(11, 55, 76, 29);
         pane.add(rdbtnTask);
@@ -65,26 +78,25 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
         rdbtnAppointment.setBounds(98, 55, 155, 29);
         pane.add(rdbtnAppointment);
         rdbtnAppointment.addActionListener(this);
-
-        ButtonGroup options = new ButtonGroup();
-        options.add(rdbtnAccomplishment);
-        options.add(rdbtnAppointment);
-        options.add(rdbtnTask);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("remove")) {
-            if (rdbtnAppointment.isSelected()) {
-                menu.removeAppointment(Integer.parseInt(index.getText()));
-            } else if (rdbtnAccomplishment.isSelected()) {
-                menu.removeAccomplishment(Integer.parseInt(index.getText()));
-            } else if (rdbtnTask.isSelected()) {
-                menu.removeToDo(Integer.parseInt(index.getText()));
+        try {
+            if (e.getActionCommand().equals("remove")) {
+                if (rdbtnAppointment.isSelected()) {
+                    menu.removeAppointment(Integer.parseInt(index.getText()));
+                } else if (rdbtnAccomplishment.isSelected()) {
+                    menu.removeAccomplishment(Integer.parseInt(index.getText()));
+                } else if (rdbtnTask.isSelected()) {
+                    menu.removeToDo(Integer.parseInt(index.getText()));
+                }
+                journalWindow.displayAchievements();
+                journalWindow.displayToDos();
+                journalWindow.displayAppointments();
             }
-            journalWindow.displayAchievements();
-            journalWindow.displayToDos();
-            journalWindow.displayAppointments();
+        } catch (InvalidTaskNumberException exception) {
+            JOptionPane.showMessageDialog(null, "Invalid task number, try again.");
         }
     }
 }
