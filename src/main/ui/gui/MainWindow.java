@@ -25,7 +25,7 @@ public class MainWindow implements ActionListener {
     private JTextField dateFieldNew;
     private JTextField dateFieldOld;
 
-
+    // EFFECT: creates new MainWindow
     public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException,
             IllegalAccessException, IOException {
         menu = new MainMenu();
@@ -33,6 +33,24 @@ public class MainWindow implements ActionListener {
         displayGUI();
     }
 
+    // EFFECT: adds GUI components to this
+    // MODIFY: this
+    public void displayGUI() throws IOException {
+        frame = new JFrame("MyJournal");
+
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addToPane(frame.getContentPane());
+
+
+        frame.pack();
+        frame.setSize(new Dimension(700, 400));
+        frame.setVisible(true);
+
+    }
+
+    // EFFECT: adds GUI components to pane
+    // MODIFY: this, pane
     public void addToPane(Container pane) throws IOException {
         JTabbedPane tabbedPane = new JTabbedPane();
 
@@ -55,20 +73,8 @@ public class MainWindow implements ActionListener {
 
     }
 
-    public void displayGUI() throws IOException {
-        frame = new JFrame("MyJournal");
-
-        frame.getContentPane().setLayout(new BorderLayout());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addToPane(frame.getContentPane());
-
-
-        frame.pack();
-        frame.setSize(new Dimension(700, 400));
-        frame.setVisible(true);
-
-    }
-
+    // EFFECT: adds GUI components to the new day panel option
+    // MODIFY: this
     public void displayNewDayPanel() throws IOException {
         JLabel newWelcomeMessage = new JLabel("Hello. " + extractWeather(getWeather()));
         JLabel newFormatMessage = new JLabel("Please enter in a date in the format YYYYMMDD");
@@ -89,6 +95,8 @@ public class MainWindow implements ActionListener {
 
     }
 
+    // EFFECT: adds GUI components to the old day panel option
+    // MODIFY: this
     public void displayOldDayPanel() throws IOException {
         JLabel oldWelcomeMessage = new JLabel("Hello. " + extractWeather(getWeather()));
         JLabel oldFormatMessage = new JLabel("Please enter in a date in the format YYYYMMDD");
@@ -108,6 +116,8 @@ public class MainWindow implements ActionListener {
         enterOld.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
+    // EFFECT: creates a new menu for a new or existing journal file depending on what button is clicked
+    // MODIFY: this
     @Override
     public void actionPerformed(ActionEvent e) {
         try {

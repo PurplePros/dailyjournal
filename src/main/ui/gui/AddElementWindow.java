@@ -160,7 +160,7 @@ public class AddElementWindow extends JFrame implements ActionListener {
         buttonAcc.setActionCommand("enterAcc");
     }
 
-    // EFFECT: calls me
+    // EFFECT: adds a new appointment, to-do, or achievement with entered information based on what button is clicked
     @Override
     public void actionPerformed(ActionEvent e) {
         try {

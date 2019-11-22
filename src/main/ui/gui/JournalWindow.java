@@ -19,6 +19,7 @@ public class JournalWindow extends JFrame implements ActionListener {
     private JTextArea apps;
     private JTextArea accs;
 
+    // EFFECT: creates a new JournalWindow with given date
     public JournalWindow(String date) throws IOException {
         super(date);
         selectionMenu = new Menu(date);
@@ -28,6 +29,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         displayAchievements();
     }
 
+    // EFFECT: sets other GUI components to this
+    // MODIFY: this
     public void displayGUI() {
         getContentPane().setLayout(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -43,6 +46,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    // EFFECT: adds GUI components to pane
+    // MODIFY: this
     public void addToPane(Container pane) {
         displayToDoGui(pane);
         displayAppGui(pane);
@@ -52,6 +57,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         displayButtons(pane);
     }
 
+    // EFFECT: adds to-do GUI components to pane
+    // MODIFY: this
     public void displayToDoGui(Container pane) {
         todo = new JTextArea();
         todo.setFont(new Font("Lucida Sans", Font.PLAIN, 16));
@@ -63,6 +70,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         todo.setWrapStyleWord(true);
     }
 
+    // EFFECT: adds appointment GUI components to pane
+    // MODIFY: this
     public void displayAppGui(Container pane) {
         apps = new JTextArea();
         apps.setFont(new Font("Lucida Sans", Font.PLAIN, 16));
@@ -74,6 +83,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         apps.setWrapStyleWord(true);
     }
 
+    // EFFECT: adds labels to pane
+    // MODIFY: this
     public void displayLabels(Container pane) {
         JLabel lblTodoList = new JLabel("To-Do List");
         lblTodoList.setFont(new Font("SimHei", Font.BOLD, 24));
@@ -91,6 +102,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         pane.add(lblAchievements);
     }
 
+    // EFFECT: display accomplishment GUI components to pane
+    // MODIFY: this
     public void displayAccGui(Container pane) {
         accs = new JTextArea();
         accs.setFont(new Font("Lucida Sans", Font.PLAIN, 16));
@@ -102,6 +115,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         accs.setWrapStyleWord(true);
     }
 
+    // EFFECT: adds buttons to pane
+    // MODIFY: this
     public void displayButtons(Container pane) {
         JButton btnAdd = new JButton("ADD");
         btnAdd.setBounds(82, 876, 193, 67);
@@ -116,6 +131,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         btnRemove.setActionCommand("remove");
     }
 
+    // EFFECT: display appointment entries to the appointment panel
+    // MODIFY: this
     public void displayAppointments() {
         ArrayList<String> printedList = selectionMenu.toStringMultipleList(selectionMenu.getDay().getAppointmentList());
         String toPrint = "";
@@ -129,6 +146,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         apps.append(toPrint);
     }
 
+    // EFFECT: display achievement entries to the appointment panel
+    // MODIFY: this
     public void displayAchievements() {
         ArrayList<String> printedList = selectionMenu.toStringSingleList(selectionMenu.getDay().getAchievementList());
         String toPrint = "";
@@ -142,6 +161,8 @@ public class JournalWindow extends JFrame implements ActionListener {
         accs.append(toPrint);
     }
 
+    // EFFECT: display to-do entries to the to-do panel
+    // MODIFY: this
     public void displayToDos() {
         ArrayList<String> printedList = selectionMenu.toStringMultipleList(selectionMenu.getDay().getToDoList());
         String toPrint = "";
@@ -155,6 +176,7 @@ public class JournalWindow extends JFrame implements ActionListener {
         todo.append(toPrint);
     }
 
+    // EFFECT: creates new AddElementWindow or RemoveElementWindow depending on what button is pressed
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("add")) {

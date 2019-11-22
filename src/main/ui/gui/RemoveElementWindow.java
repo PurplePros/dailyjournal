@@ -17,6 +17,7 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
     private JRadioButton rdbtnAccomplishment;
     private JRadioButton rdbtnAppointment;
 
+    // EFFECT: creates new RemoveElementWindow
     public RemoveElementWindow(Menu menu, JournalWindow journalWindow) {
         super();
         this.menu = menu;
@@ -24,6 +25,8 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
         displayGui();
     }
 
+    // EFFECT: adds GUI components to this
+    // MODIFY: this
     public void displayGui() {
         setBounds(100, 100, 450, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -32,6 +35,8 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    // EFFECT: adds GUI elements to pane
+    // MODIFY: this, pane
     public void addToPane(Container pane) {
         JLabel lblAddAValid = new JLabel("Add a valid number from 1 to");
         lblAddAValid.setBounds(15, 16, 286, 27);
@@ -47,6 +52,8 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
         addButtonsToPane(pane);
     }
 
+    // EFFECT: adds buttons to pane
+    // MODIFY: pane, this
     public void addButtonsToPane(Container pane) {
         JButton btnRemoveItem = new JButton("Remove Item");
         btnRemoveItem.setBounds(15, 169, 158, 29);
@@ -62,6 +69,8 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
         options.add(rdbtnTask);
     }
 
+    // EFFECT: creates radio buttons to pane
+    // MODIFY: pane, this
     public void displayRadioButtons(Container pane) {
         rdbtnTask = new JRadioButton("Task");
         rdbtnTask.setBounds(11, 55, 76, 29);
@@ -80,6 +89,9 @@ public class RemoveElementWindow extends JFrame implements ActionListener {
         rdbtnAppointment.addActionListener(this);
     }
 
+    // EFFECT: either removes appointment, accomplishment, or to-do from current list depending on which button is
+    //         pressed
+    // MODIFY: this
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
