@@ -117,6 +117,8 @@ public class Day {
         multipleElementsList.get("apps").deleteTask(index - 1);
     }
 
+    // shamelessly quoting from:
+    // https://stackoverflow.com/questions/7536755/regular-expression-for-matching-hhmm-time-format
     // EFFECT: returns true if time is in valid 24-hr format
     protected boolean isRightTimeFormat(String time) {
         return time.matches("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$");

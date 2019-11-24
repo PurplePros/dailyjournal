@@ -18,6 +18,7 @@ public class FileProcessor {
 
     private String date;
 
+    // EFFECT: creates a new FileProcessor
     public FileProcessor(String date) {
         this.date = date;
         toDoList = new ToDoList();
